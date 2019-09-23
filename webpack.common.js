@@ -18,6 +18,18 @@ module.exports = {
           'less-loader',
         ],
       },
+      {
+        test: /\.ttf$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/',
+            }
+          }
+        ]
+      }
     ],
   },
   resolve: {
