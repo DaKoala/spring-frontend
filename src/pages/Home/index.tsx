@@ -1,9 +1,10 @@
 import * as React from 'react';
+import Brand from '@/components/Brand';
 
 export default class Home extends React.PureComponent {
   render() {
     return (
-      <h1>Hello world!</h1>
-    )
+      <Brand />
+    );
   }
 }

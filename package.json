@@ -12,6 +12,7 @@
   "author": "Yijie Zou",
   "license": "ISC",
   "devDependencies": {
+    "@types/classnames": "^2.2.9",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
     "@types/react-router-dom": "^4.3.5",
@@ -39,6 +40,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "classnames": "^2.2.6",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1"

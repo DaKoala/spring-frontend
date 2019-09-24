@@ -10,25 +10,26 @@ module.exports = {
     }
   },
   env: {
-      node: true
+    browser: true,
+    node: true
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
-      project: 'tsconfig.json',
-      sourceType: 'module'
+    project: 'tsconfig.json',
+    sourceType: 'module'
   },
   plugins: [
-      '@typescript-eslint',
+    '@typescript-eslint',
   ],
   extends: [
-      'airbnb',
-      'eslint:recommended',
-      'plugin:@typescript-eslint/eslint-recommended',
-      'plugin:@typescript-eslint/recommended',
-      'plugin:react/recommended',
-      'plugin:import/errors',
-      'plugin:import/warnings',
-      'plugin:import/typescript'
+    'airbnb',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript'
   ],
   rules: {
     '@typescript-eslint/explicit-function-return-type': 'off',
