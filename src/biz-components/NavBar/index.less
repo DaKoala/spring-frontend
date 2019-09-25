@@ -1,0 +1,24 @@
+@import '../../styles/variables.less';
+
+.nav {
+  display: flex;
+  margin-left: 65px;
+}
+.nav__item {
+  position: relative;
+  color: @text-black;
+  font-family: Futura, sans-serif;
+  font-size: 18px;
+  line-height: 24px;
+  text-transform: uppercase;
+  text-decoration: none;
+  &:hover {
+    color: @bk-green;
+  }
+}
+.nav__item + .nav__item {
+  margin-left: 61px;
+}
+.nav__item--active {
+  color: @bk-green;
+}

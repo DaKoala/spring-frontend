@@ -1,10 +1,20 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
+import classNames from 'classnames/bind';
 import Brand from '@/components/Brand';
+import NavBar from '@/biz-components/NavBar';
+import styles from './index.less';
 
-export default class Home extends React.PureComponent {
+const cx = classNames.bind(styles);
+
+export default class Home extends PureComponent {
   render() {
     return (
-      <Brand />
+      <div>
+        <header className={cx('home__header')}>
+          <Brand />
+          <NavBar />
+        </header>
+      </div>
     );
   }
 }

@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import classNames from 'classnames/bind';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
 
-export default class Brand extends React.PureComponent {
+export default class Brand extends PureComponent {
   render() {
     return (
-      <span className={cx('brand')}>Spring</span>
+      <h1 className={cx('brand')}>Spring</h1>
     );
   }
 }
