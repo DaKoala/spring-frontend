@@ -1,6 +1,41 @@
+@import '../../styles/variables.less';
+
+.home {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .home__header {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   margin-top: 45px;
   margin-left: 58px;
+}
+
+.home__main {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 120px 0 87px;
+}
+
+.desc__title {
+  max-width: 326px;
+  color: @text-black;
+  font-size: 60px;
+  line-height: 72px;
+}
+.desc__subtitle {
+  max-width: 528px;
+  margin-top: 30px;
+  color: @text-grey;
+  font-size: 18px;
+  line-height: 22px;
+}
+.desc__btn {
+  margin-top: 30px;
 }

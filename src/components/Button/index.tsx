@@ -34,8 +34,9 @@ export default class Button extends PureComponent<ButtonProps> {
   }
 
   render() {
+    const { children } = this.props;
     return (
-      <button className={this.btnClass} type="button">Big Button</button>
+      <button className={this.btnClass} type="button">{children}</button>
     );
   }
 }

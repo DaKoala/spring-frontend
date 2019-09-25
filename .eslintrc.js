@@ -32,7 +32,10 @@ module.exports = {
     'plugin:import/typescript'
   ],
   rules: {
+    'class-methods-use-this': 'off',
+    'no-unused-expressions': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     'react/jsx-filename-extension': 'off',
+    'react/static-property-placement': 'off',
   }
 };
