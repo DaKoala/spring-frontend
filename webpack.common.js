@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
   entry: './src/index.tsx',
@@ -19,7 +20,9 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
+              modules: {
+                localIdentName: isProd ? '[hash:base64:8]' : '[local]--[hash:base64:5]',
+              },
             }
           },
           {
