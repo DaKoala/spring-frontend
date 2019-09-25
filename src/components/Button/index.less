@@ -1,0 +1,46 @@
+@import '../../styles/variables.less';
+
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 24px;
+  font-size: 18px;
+  line-height: 22px;
+  cursor: pointer;
+  outline: none;
+}
+
+.btn--primary {
+  background-color: @bk-green;
+  color: white;
+  &:hover {
+    color: lighten(white, 10%);
+    background-color: lighten(@bk-green, 10%);
+  }
+  &:active {
+    color: darken(white, 10%);
+    background-color: darken(@bk-green, 10%);
+  }
+}
+
+.btn--secondary {
+  background-color: @bk-grey;
+  color: @text-grey;
+  &:hover {
+    background-color: lighten(@bk-grey, 10%);
+    color: lighten(@text-grey, 10%);
+  }
+  &:active {
+    background-color: darken(@bk-grey, 10%);
+    color: lighten(@text-grey, 10%);
+  }
+}
+
+.btn--big {
+  border-radius: 6px;
+  padding: 16px 24px;
+  font-size: 20px;
+  font-family: Futura, sans-serif;
+  line-height: 26px;
+}
