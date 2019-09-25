@@ -23,9 +23,9 @@ export default class NavBar extends PureComponent {
   render() {
     return (
       <nav className={cx('nav')}>
-        <NavItem to="/plans">Plans</NavItem>
-        <NavItem to="/features">Features</NavItem>
-        <NavItem to="/about">About us</NavItem>
+        <NavItem to="/plans">PLANS</NavItem>
+        <NavItem to="/features">FEATURES</NavItem>
+        <NavItem to="/about">ABOUT US</NavItem>
       </nav>
     );
   }
