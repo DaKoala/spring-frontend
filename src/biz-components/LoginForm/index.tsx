@@ -46,8 +46,19 @@ export default class LoginForm extends PureComponent<{}, LoginFormState> {
           <span>Do not have an account?</span>
           <Link className={cx('login__support--link')} to="/register">Sign up</Link>
         </div>
-        <Input label="EMAIL" placeholder="Enter email address" onChange={this.handleEmailChange} />
-        <Input label="PASSWORD" placeholder="Enter password" type="password" onChange={this.handlePasswordChange} />
+        <Input
+          className={cx('login__input')}
+          label="EMAIL"
+          placeholder="Enter email address"
+          onChange={this.handleEmailChange}
+        />
+        <Input
+          className={cx('login__input')}
+          label="PASSWORD"
+          placeholder="Enter password"
+          type="password"
+          onChange={this.handlePasswordChange}
+        />
         <Button className={cx('login__submit')} disabled={this.buttonDisabled}>Log in</Button>
       </div>
     );
