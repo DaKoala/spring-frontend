@@ -4,10 +4,19 @@ import styles from './index.less';
 
 const cx = classNames.bind(styles);
 
-export default class Brand extends PureComponent {
+interface BrandProps {
+  className: string;
+}
+
+export default class Brand extends PureComponent<BrandProps> {
+  static defaultProps = {
+    className: '',
+  }
+
   render() {
+    const { className } = this.props;
     return (
-      <h1 className={cx('brand')}>Spring</h1>
+      <h1 className={cx('brand', className)}>Spring</h1>
     );
   }
 }
