@@ -6,6 +6,7 @@
   border-radius: 3px;
   padding: 10px 24px;
   font-size: 18px;
+  font-family: Lato, sans-serif;
   line-height: 22px;
   cursor: pointer;
   outline: none;
@@ -43,4 +44,13 @@
   font-size: 20px;
   font-family: Futura, sans-serif;
   line-height: 26px;
+}
+
+.btn--disabled {
+  background-color: @text-grey;
+  &:hover, &:active {
+    color: white;
+    background-color: @text-grey;
+  }
+  cursor: not-allowed;
 }

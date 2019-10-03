@@ -1,0 +1,32 @@
+@import "../../styles/variables.less";
+
+.input {
+  margin-top: 31px;
+}
+.input__label {
+  display: block;
+  color: @text-green;
+  font-weight: bold;
+  font-size: 12px;
+}
+.input__box {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  border: none;
+  border-bottom: solid 1px @line-grey;
+  padding-bottom: 10px;
+  font-size: 18px;
+  font-family: Lato, sans-serif;
+  line-height: 22px;
+  color: @text-black;
+  outline: none;
+  transition: border-bottom-color 0.5s;
+  &:focus {
+    border-bottom-color: @text-green;
+  }
+  &::placeholder {
+    color: @text-grey;
+    font-weight: @font-weight-light;
+  }
+}

@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import Brand from '@/components/Brand';
 import Button from '@/components/Button';
 import NavBar from '@/biz-components/NavBar';
+import LoginForm from '@/biz-components/LoginForm';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -31,6 +32,7 @@ export default class Home extends PureComponent {
     return (
       <div className={cx('home__main')}>
         {this.renderDescription()}
+        <LoginForm />
       </div>
     );
   }
