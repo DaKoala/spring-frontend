@@ -1,10 +1,37 @@
 @import "../../styles/variables.less";
 
+.input--register {
+  .input__label {
+    color: @text-black;
+  }
+  .input__box {
+    margin-top: 10px;
+  }
+}
 .input__label {
   display: block;
+  line-height: 15px;
   color: @text-green;
   font-weight: bold;
   font-size: 12px;
+}
+.input__label--required {
+  &::before {
+    content: '*';
+    margin-right: 5px;
+    color: red;
+  }
+}
+.input__error {
+  margin-left: 10px;
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: normal;
+  font-style: italic;
+  color: red;
+  &::before {
+    content: '*';
+  }
 }
 .input__box {
   display: block;
@@ -25,5 +52,8 @@
   &::placeholder {
     color: @text-grey;
     font-weight: @font-weight-light;
+  }
+  &.input__box--error {
+    border-bottom-color: red;
   }
 }

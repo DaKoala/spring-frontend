@@ -32,6 +32,7 @@ module.exports = {
     'plugin:import/typescript'
   ],
   rules: {
+    'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
     'class-methods-use-this': 'off',
     'no-unused-expressions': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
