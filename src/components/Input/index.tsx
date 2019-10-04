@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 interface InputProps {
   className: string;
   label: string;
-  type: 'text' | 'password';
+  textType: 'text' | 'password';
   onChange: React.ChangeEventHandler;
   placeholder?: string;
 }
@@ -15,7 +15,7 @@ interface InputProps {
 export default class Input extends PureComponent<InputProps> {
   static defaultProps = {
     className: '',
-    type: 'text',
+    textType: 'text',
     onChange: () => {},
   }
 

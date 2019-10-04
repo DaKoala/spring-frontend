@@ -56,7 +56,7 @@ export default class LoginForm extends PureComponent<{}, LoginFormState> {
           className={cx('login__input')}
           label="PASSWORD"
           placeholder="Enter password"
-          type="password"
+          textType="password"
           onChange={this.handlePasswordChange}
         />
         <Button className={cx('login__submit')} disabled={this.buttonDisabled}>Log in</Button>
