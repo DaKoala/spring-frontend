@@ -1,6 +1,7 @@
 @import "../../styles/variables.less";
 
 .registerForm {
+  position: relative;
   width: 580px;
   padding: 0 82px;
   background-color: white;
@@ -28,7 +29,15 @@
 }
 .registerForm__input {
   margin-top: 32px;
+  &:first-child {
+    margin-top: 137px;
+  }
 }
 .registerForm__continue {
   margin: 50px 0 95px 0;
+}
+.registerForm__back {
+  position: absolute;
+  top: 39px;
+  left: 39px;
 }

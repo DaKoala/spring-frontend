@@ -1,0 +1,67 @@
+@import "../../styles/variables.less";
+
+.select__label {
+  line-height: 15px;
+  color: @text-black;
+  font-weight: bold;
+  font-size: 12px;
+}
+.select__label--required {
+  &::before {
+    content: '*';
+    margin-right: 5px;
+    color: red;
+  }
+}
+.select__box {
+  position: relative;
+  margin-top: 10px;
+  width: 200px;
+  height: 35px;
+  border: 1px solid @line-grey;
+  border-radius: 5px;
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  cursor: pointer;
+}
+.select__box--expanded {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  .select__triangle {
+    transform: rotate(180deg);
+  }
+}
+.select__box--option {
+  margin-top: 0;
+  border-top: none;
+  background-color: white;
+  border-radius: 0;
+  &:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  &:hover {
+    background-color: lighten(@bk-green, 35%);
+  }
+}
+.select__box--active {
+  background-color: @bk-grey;
+  font-weight: bold;
+}
+.select__triangle {
+  position: absolute;
+  right: 18px;
+  font-size: 18px;
+  font-weight: @font-weight-light;
+  color: #a3a3a3;
+  transform-origin: center center;
+  transform: rotate(0);
+  transition: transform 300ms;
+}
+.select__options {
+  position: absolute;
+  top: 34px;
+  left: -1px;
+}

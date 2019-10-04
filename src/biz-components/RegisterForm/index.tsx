@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import autobind from 'autobind-decorator';
 import Input, { Rule } from '@/components/Input';
 import Button from '@/components/Button';
+import Select, { Option } from '@/components/Select';
 import { EMAIL_REGEX } from '@/constants';
 import styles from './index.less';
 
@@ -31,7 +32,24 @@ const passwordRules: Rule[] = [
   },
 ];
 
+const genderOptions: Option[] = [
+  {
+    value: 'male',
+    text: 'Male',
+  },
+  {
+    value: 'female',
+    text: 'Female',
+  },
+];
+
+enum Step {
+  General,
+  Patient,
+}
+
 interface RegisterFormState {
+  step: Step;
   email: string;
   emailValid: boolean;
   password: string;
@@ -40,6 +58,7 @@ interface RegisterFormState {
 
 export default class RegisterForm extends Component<{}, RegisterFormState> {
   state: RegisterFormState = {
+    step: Step.General,
     email: '',
     emailValid: false,
     password: '',
@@ -49,6 +68,20 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
   get canContinue(): boolean {
     const { emailValid, passwordValid } = this.state;
     return emailValid && passwordValid;
+  }
+
+  @autobind
+  handleContinueClick() {
+    this.setState({
+      step: Step.Patient,
+    });
+  }
+
+  @autobind
+  handleBackClick() {
+    this.setState({
+      step: Step.General,
+    });
   }
 
   @autobind
@@ -109,15 +142,61 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
           onChange={this.handlePasswordChange}
           onValidate={this.handlePasswordValidate}
         />
-        <Button className={cx('registerForm__continue')} disabled={!this.canContinue}>Continue</Button>
+        <Button
+          className={cx('registerForm__continue')}
+          disabled={!this.canContinue}
+          onClick={this.handleContinueClick}
+        >
+          Continue
+        </Button>
       </>
     );
+  }
+
+  renderPatientForm() {
+    return (
+      <>
+        <Input
+          className={cx('registerForm__input')}
+          type="register"
+          label="FIRST NAME"
+        />
+        <Input
+          className={cx('registerForm__input')}
+          type="register"
+          label="LAST NAME"
+        />
+        <Select
+          className={cx('registerForm__input')}
+          label="GENDER"
+          options={genderOptions}
+        />
+        <Button
+          className={cx('registerForm__back')}
+          onClick={this.handleBackClick}
+          type="secondary"
+        >
+          Back
+        </Button>
+      </>
+    );
+  }
+
+  renderForm() {
+    const { step } = this.state;
+    if (step === Step.General) {
+      return this.renderGeneralForm();
+    }
+    if (step === Step.Patient) {
+      return this.renderPatientForm();
+    }
+    return null;
   }
 
   render() {
     return (
       <div className={cx('registerForm')}>
-        {this.renderGeneralForm()}
+        {this.renderForm()}
       </div>
     );
   }
