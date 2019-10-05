@@ -33,12 +33,14 @@ module.exports = {
   ],
   rules: {
     'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
+    'no-continue': 'off',
     'class-methods-use-this': 'off',
     'no-unused-expressions': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     'react/jsx-filename-extension': 'off',
     'react/static-property-placement': 'off',
     'react/state-in-constructor': 'off',
+    'jsx-a11y/no-autofocus': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
   }

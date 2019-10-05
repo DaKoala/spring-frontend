@@ -10,7 +10,7 @@ export default class Register extends PureComponent {
   render() {
     return (
       <div className={cx('register')}>
-        <Brand className={cx('register__brand')} />
+        <Brand toIndex className={cx('register__brand')} />
         <RegisterForm />
       </div>
     );

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import autobind from 'autobind-decorator';
 import classNames from 'classnames/bind';
 import styles from './index.less';
 
@@ -18,8 +19,10 @@ interface InputProps {
   type: 'login' | 'register';
   textType: 'text' | 'password';
   onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onEnterKeyUp: () => void;
   onValidate: (valid: boolean) => void;
   rules: Rule[];
+  autoFocus?: boolean;
   value?: string;
   placeholder?: string;
 }
@@ -41,20 +44,28 @@ export default class Input extends PureComponent<InputProps, InputState> {
     textType: 'text',
     rules: [],
     onChange: () => {},
+    onEnterKeyUp: () => {},
     onValidate: () => {},
-  }
-
-  get handleChange(): React.ChangeEventHandler {
-    const { onChange } = this.props;
-    return (e: React.ChangeEvent<HTMLInputElement>) => {
-      onChange(e);
-      this.validate(e.target.value);
-    };
   }
 
   get isRequired(): boolean {
     const { rules } = this.props;
     return rules.some((rule) => rule.required);
+  }
+
+  @autobind
+  handleKeyUp(e: React.KeyboardEvent<HTMLInputElement>) {
+    const { onEnterKeyUp } = this.props;
+    if (e.keyCode === 13) {
+      onEnterKeyUp();
+    }
+  }
+
+  @autobind
+  handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { onChange } = this.props;
+    onChange(e);
+    this.validate(e.target.value);
   }
 
   pass() {
@@ -78,6 +89,9 @@ export default class Input extends PureComponent<InputProps, InputState> {
   validate(value: string): boolean {
     const { rules } = this.props;
     for (const rule of rules) {
+      if (!rule.required && value === '') {
+        continue;
+      }
       if (
         (rule.required && value === '')
         || (rule.minLength && value.length < rule.minLength)
@@ -102,6 +116,7 @@ export default class Input extends PureComponent<InputProps, InputState> {
   render() {
     const { error } = this.state;
     const {
+      autoFocus,
       className,
       label,
       type,
@@ -116,8 +131,10 @@ export default class Input extends PureComponent<InputProps, InputState> {
           {this.renderError()}
         </label>
         <input
+          autoFocus={autoFocus}
           value={value}
           onChange={this.handleChange}
+          onKeyUp={this.handleKeyUp}
           className={cx('input__box', { 'input__box--error': error })}
           id={label}
           type={textType}
