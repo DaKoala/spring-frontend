@@ -10,14 +10,14 @@ interface NavItemProps {
   children: React.ReactNode;
 }
 
-function NavItem(props: NavItemProps) {
+const NavItem: React.FunctionComponent<NavItemProps> = (props: NavItemProps) => {
   const { to, children } = props;
   return (
     <NavLink to={to} className={cx('nav__item')} activeClassName={cx('nav__item--active')}>
       {children}
     </NavLink>
   );
-}
+};
 
 export default class NavBar extends PureComponent {
   render() {

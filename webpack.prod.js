@@ -1,12 +1,12 @@
 const merge = require('webpack-merge');
+const CopyPlugin = require('copy-webpack-plugin');
 const common = require('./webpack.common');
-const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = merge(common, {
   mode: 'production',
   plugins: [
     new CopyPlugin([
-      { from: './public', to: '.' }
-    ])
-  ]
+      { from: './public', to: '.' },
+    ]),
+  ],
 });
