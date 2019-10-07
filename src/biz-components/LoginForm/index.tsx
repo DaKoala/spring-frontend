@@ -2,19 +2,27 @@ import React, { PureComponent } from 'react';
 import autobind from 'autobind-decorator';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
+import { inject, observer } from 'mobx-react';
 import Input from '@/components/Input';
 import Button from '@/components/Button';
+import RouterStore from '@/stores/router';
 import { login } from '@/service';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
+
+interface LoginFormProps {
+  routerStore?: RouterStore;
+}
 
 interface LoginFormState {
   email: string;
   password: string;
 }
 
-export default class LoginForm extends PureComponent<{}, LoginFormState> {
+@inject('routerStore')
+@observer
+export default class LoginForm extends PureComponent<LoginFormProps, LoginFormState> {
   state: LoginFormState = {
     email: '',
     password: '',
@@ -42,10 +50,12 @@ export default class LoginForm extends PureComponent<{}, LoginFormState> {
   @autobind
   async handleLoginSubmit() {
     const { email, password } = this.state;
-    const res = await login({
+    const { routerStore } = this.props;
+    await login({
       email,
       password,
     });
+    routerStore!.push('/user');
   }
 
   render() {

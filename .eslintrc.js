@@ -38,6 +38,7 @@ module.exports = {
     'no-unused-expressions': 'off',
     'import/prefer-default-export': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
     'react/jsx-filename-extension': 'off',
     'react/static-property-placement': 'off',
     'react/state-in-constructor': 'off',

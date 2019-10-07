@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 import './index.less';
 import { viewPatientInfo } from '@/service';
 import { getToken } from '@/service/cookie';
 import { userStoreInstance } from '@/stores/user';
+import { routerStoreInstance, history } from '@/stores/router';
 import NotFound from '@/pages/NotFound';
 import Home from '@/pages/Home';
 import Register from '@/pages/Register';
@@ -15,13 +16,17 @@ export default class App extends React.PureComponent {
     const token = getToken();
     if (token) {
       await viewPatientInfo();
+      routerStoreInstance.push('/user');
     }
   }
 
   render() {
     return (
-      <Provider userStore={userStoreInstance}>
-        <Router>
+      <Provider
+        userStore={userStoreInstance}
+        routerStore={routerStoreInstance}
+      >
+        <Router history={history}>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/register" component={Register} />

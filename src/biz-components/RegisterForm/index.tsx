@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import autobind from 'autobind-decorator';
+import { inject, observer } from 'mobx-react';
+import RouterStore from '@/stores/router';
 import Input, { Rule } from '@/components/Input';
 import Button from '@/components/Button';
 import Select, { Option } from '@/components/Select';
@@ -71,6 +73,10 @@ enum Step {
   Patient,
 }
 
+interface RegisterFormProps {
+  routerStore?: RouterStore;
+}
+
 interface RegisterFormState {
   step: Step;
   email: string;
@@ -87,7 +93,9 @@ interface RegisterFormState {
   birthdayValid: boolean;
 }
 
-export default class RegisterForm extends PureComponent<{}, RegisterFormState> {
+@inject('routerStore')
+@observer
+export default class RegisterForm extends PureComponent<RegisterFormProps, RegisterFormState> {
   state: RegisterFormState = {
     step: Step.General,
     email: '',
@@ -149,13 +157,15 @@ export default class RegisterForm extends PureComponent<{}, RegisterFormState> {
       gender,
       birthday,
     } = this.state;
-    const res = await postPatientInfo({
+    await postPatientInfo({
       firstName,
       lastName,
       gender,
       birthday,
       healthInformation: {},
     });
+    const { routerStore } = this.props;
+    routerStore!.push('/user');
   }
 
   @autobind

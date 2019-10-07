@@ -1,6 +1,6 @@
 export function setToken(token: string) {
   const date = new Date();
-  date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000); // token有效时间一个月
+  date.setTime(date.getTime() + 24 * 60 * 60 * 1000); // token有效时间一个月
   document.cookie = `token=${token}; expires=${date.toUTCString()}`;
 }
 
