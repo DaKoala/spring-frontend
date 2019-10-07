@@ -2,18 +2,25 @@ import * as React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 import './index.less';
-import UserStore from '@/stores/user';
+import { viewPatientInfo } from '@/service';
+import { getToken } from '@/service/cookie';
+import { userStoreInstance } from '@/stores/user';
 import NotFound from '@/pages/NotFound';
 import Home from '@/pages/Home';
 import Register from '@/pages/Register';
 import User from '@/pages/User';
 
-const userStore = new UserStore();
-
 export default class App extends React.PureComponent {
+  async componentDidMount() {
+    const token = getToken();
+    if (token) {
+      await viewPatientInfo();
+    }
+  }
+
   render() {
     return (
-      <Provider userStore={userStore}>
+      <Provider userStore={userStoreInstance}>
         <Router>
           <Switch>
             <Route exact path="/" component={Home} />

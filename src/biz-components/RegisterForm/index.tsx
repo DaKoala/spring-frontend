@@ -343,6 +343,7 @@ export default class RegisterForm extends PureComponent<{}, RegisterFormState> {
           onValidate={this.handleBirthdayValidate}
         />
         <Button
+          onClick={this.handleFinishClick}
           className={cx('registerForm__create')}
           disabled={!this.canSubmit}
         >

@@ -9,7 +9,7 @@ export default class UserStore {
 
   @observable gender = '';
 
-  @observable birthday = '';
+  @observable birthday = 0;
 
   @computed
   get fullName(): string {
@@ -37,7 +37,9 @@ export default class UserStore {
   }
 
   @action
-  setBirthday(birthday: string) {
+  setBirthday(birthday: number) {
     this.birthday = birthday;
   }
 }
+
+export const userStoreInstance = new UserStore();

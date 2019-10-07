@@ -11,7 +11,7 @@ export function getToken(): string {
       cookie = cookie.substring(1);
     }
     if (cookie.indexOf('token') === 0) {
-      return cookie.substring(5, cookie.length);
+      return cookie.substring(6, cookie.length);
     }
   }
   return '';

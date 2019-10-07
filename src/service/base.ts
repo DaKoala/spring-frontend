@@ -1,6 +1,22 @@
 import axios from 'axios';
+import { getToken } from './cookie';
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://97b14922.ngrok.io';
+
+function transformData(data?: Record<string, any>) {
+  if (!data) {
+    return undefined;
+  }
+  const formData = new FormData();
+  for (const key of Object.keys(data)) {
+    let value = data[key];
+    if (typeof value === 'object') {
+      value = JSON.stringify(value);
+    }
+    formData.set(key, value);
+  }
+  return formData;
+}
 
 interface RequestOptions {
   url: string;
@@ -25,14 +41,22 @@ export default async function ajax<T = null>(options: RequestOptions) {
   } = options;
   const isGet = method !== 'POST';
   const headers = auth ? {
-    Authorization: 'xxx',
-  } : undefined;
+    Authorization: getToken(),
+  } : {};
+  if (!isGet) {
+    Object.assign(headers, {
+      'Content-Type': 'multipart/form-data; boundary=--------------------------968651210695093966689015',
+    });
+  }
   const params = isGet ? data : undefined;
   const bodyData = isGet ? undefined : data;
   let response;
   try {
     response = await axios({
       url: `${BASE_URL}${url}`,
+      transformRequest: [
+        transformData,
+      ],
       method,
       headers,
       params,
@@ -51,6 +75,9 @@ export default async function ajax<T = null>(options: RequestOptions) {
   if (!resData.success || resData.code !== 200) {
     alert(resData.message);
     throw new Error(resData.message);
+  }
+  if (typeof response.data.data === 'string') {
+    response.data.data = JSON.parse(response.data.data);
   }
   return response.data as BaseResponse<T>;
 }

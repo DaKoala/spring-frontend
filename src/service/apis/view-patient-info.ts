@@ -1,4 +1,5 @@
 import ajax from '../base';
+import { userStoreInstance } from '@/stores/user';
 
 interface ViewPatientInfoResponse {
   birthday: number;
@@ -14,5 +15,11 @@ export async function viewPatientInfo() {
     auth: true,
     url: '/patient/information',
   });
+  const { data } = res;
+  userStoreInstance.setEmail(data.patientEmail);
+  userStoreInstance.setFirstName(data.firstName);
+  userStoreInstance.setLastName(data.lastName);
+  userStoreInstance.setGender(data.gender);
+  userStoreInstance.setBirthday(data.birthday);
   return res;
 }
