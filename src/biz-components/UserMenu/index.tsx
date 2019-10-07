@@ -8,14 +8,18 @@ import styles from './index.less';
 const cx = classNames.bind(styles);
 
 interface MenuItemProps {
-  to: string;
+  to?: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
   children: React.ReactNode;
 }
 
 const MenuItem: React.FunctionComponent<MenuItemProps> = (props: MenuItemProps) => {
-  const { to, children } = props;
-  return (
-    <NavLink exact to={to} className={cx('menu__item')} activeClassName={cx('menu__item--active')}>{children}</NavLink>
+  const { to, onClick, children } = props;
+  const clickHandler = (e: React.MouseEvent<HTMLAnchorElement>) => { onClick && onClick(e) };
+  return to ? (
+    <NavLink exact to={to} onClick={clickHandler} className={cx('menu__item')} activeClassName={cx('menu__item--active')}>{children}</NavLink>
+  ) : (
+    <a onClick={clickHandler} className={cx('menu__item')}>{children}</a>
   );
 };
 
@@ -44,7 +48,7 @@ export default class UserMenu extends PureComponent {
           <Icon name="profile" />
           <span>My profile</span>
         </MenuItem>
-        <MenuItem to="/user/logout">
+        <MenuItem>
           <Icon name="log-out" />
           <span>Log out</span>
         </MenuItem>
