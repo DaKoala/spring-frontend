@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Input from '@/components/Input';
 import Button from '@/components/Button';
+import { login } from '@/service';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -38,6 +39,15 @@ export default class LoginForm extends PureComponent<{}, LoginFormState> {
     });
   }
 
+  @autobind
+  async handleLoginSubmit() {
+    const { email, password } = this.state;
+    const res = await login({
+      email,
+      password,
+    });
+  }
+
   render() {
     return (
       <div className={cx('login')}>
@@ -59,7 +69,7 @@ export default class LoginForm extends PureComponent<{}, LoginFormState> {
           textType="password"
           onChange={this.handlePasswordChange}
         />
-        <Button className={cx('login__submit')} disabled={this.buttonDisabled}>Log in</Button>
+        <Button onClick={this.handleLoginSubmit} className={cx('login__submit')} disabled={this.buttonDisabled}>Log in</Button>
       </div>
     );
   }

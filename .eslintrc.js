@@ -36,6 +36,7 @@ module.exports = {
     'no-continue': 'off',
     'class-methods-use-this': 'off',
     'no-unused-expressions': 'off',
+    'import/prefer-default-export': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     'react/jsx-filename-extension': 'off',
     'react/static-property-placement': 'off',

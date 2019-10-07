@@ -1,4 +1,5 @@
 import ajax from '../base';
+import { setToken } from '../cookie';
 import { Role } from '@/constants';
 
 interface LoginRequest {
@@ -11,10 +12,14 @@ interface LoginResponse {
   token: string;
 }
 
-export function login(data: LoginRequest) {
-  return ajax<LoginResponse>({
+export async function login(data: LoginRequest) {
+  const res = await ajax<LoginResponse>({
     url: '/login',
     method: 'POST',
     data,
   });
+  if (res.success) {
+    setToken(res.data.token);
+  }
+  return res;
 }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import autobind from 'autobind-decorator';
@@ -6,6 +6,7 @@ import Input, { Rule } from '@/components/Input';
 import Button from '@/components/Button';
 import Select, { Option } from '@/components/Select';
 import { EMAIL_REGEX, DATE_REGEX } from '@/constants';
+import { register, postPatientInfo } from '@/service';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -33,8 +34,24 @@ const passwordRules: Rule[] = [
 ];
 const dateRules: Rule[] = [
   {
+    required: true,
+    message: 'Birthday cannot be empty',
+  },
+  {
     test: DATE_REGEX,
     message: 'Date should be in the format YYYY-MM-DD',
+  },
+];
+const firstNameRules: Rule[] = [
+  {
+    required: true,
+    message: 'First name cannot be empty',
+  },
+];
+const lastNameRules: Rule[] = [
+  {
+    required: true,
+    message: 'Last name cannot be empty',
   },
 ];
 
@@ -61,13 +78,16 @@ interface RegisterFormState {
   password: string;
   passwordValid: boolean;
   firstName: string;
+  firstNameValid: boolean;
   lastName: string;
+  lastNameValid: boolean;
   gender: string;
+  genderValid: boolean;
   birthday: string;
   birthdayValid: boolean;
 }
 
-export default class RegisterForm extends Component<{}, RegisterFormState> {
+export default class RegisterForm extends PureComponent<{}, RegisterFormState> {
   state: RegisterFormState = {
     step: Step.General,
     email: '',
@@ -75,10 +95,13 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
     password: '',
     passwordValid: false,
     firstName: '',
+    firstNameValid: false,
     lastName: '',
+    lastNameValid: false,
     gender: '',
+    genderValid: false,
     birthday: '',
-    birthdayValid: true,
+    birthdayValid: false,
   }
 
   get canContinue(): boolean {
@@ -87,21 +110,51 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
   }
 
   get canSubmit(): boolean {
-    const { birthdayValid } = this.state;
-    return birthdayValid;
+    const {
+      firstNameValid,
+      lastNameValid,
+      genderValid,
+      birthdayValid,
+    } = this.state;
+    return firstNameValid && lastNameValid && genderValid && birthdayValid;
   }
 
   @autobind
-  handleContinueClick() {
-    this.setState({
-      step: Step.Patient,
+  async handleContinueClick() {
+    const { email, password } = this.state;
+    const res = await register({
+      email,
+      password,
+      role: 'PATIENT',
     });
+    if (res.success) {
+      this.setState({
+        step: Step.Patient,
+      });
+    }
   }
 
   @autobind
   handleBackClick() {
     this.setState({
       step: Step.General,
+    });
+  }
+
+  @autobind
+  async handleFinishClick() {
+    const {
+      firstName,
+      lastName,
+      gender,
+      birthday,
+    } = this.state;
+    const res = await postPatientInfo({
+      firstName,
+      lastName,
+      gender,
+      birthday,
+      healthInformation: {},
     });
   }
 
@@ -141,6 +194,13 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
   }
 
   @autobind
+  handleFirstNameValidate(valid: boolean) {
+    this.setState({
+      firstNameValid: valid,
+    });
+  }
+
+  @autobind
   handleLastNameChange(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
       lastName: e.target.value,
@@ -148,9 +208,17 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
   }
 
   @autobind
+  handleLastNameValidate(valid: boolean) {
+    this.setState({
+      lastNameValid: valid,
+    });
+  }
+
+  @autobind
   handleGenderChange(value: string) {
     this.setState({
       gender: value,
+      genderValid: true,
     });
   }
 
@@ -172,6 +240,13 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
   handleContinueEnter() {
     if (this.canContinue) {
       this.handleContinueClick();
+    }
+  }
+
+  @autobind
+  handleFinishEnter() {
+    if (this.canSubmit) {
+      this.handleFinishClick();
     }
   }
 
@@ -212,7 +287,7 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
           disabled={!this.canContinue}
           onClick={this.handleContinueClick}
         >
-          Continue
+          Create account
         </Button>
       </>
     );
@@ -234,7 +309,9 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
           type="register"
           label="FIRST NAME"
           value={firstName}
+          rules={firstNameRules}
           onChange={this.handleFirstNameChange}
+          onValidate={this.handleFirstNameValidate}
         />
         <Input
           key="lastName"
@@ -242,9 +319,12 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
           type="register"
           label="LAST NAME"
           value={lastName}
+          rules={lastNameRules}
           onChange={this.handleLastNameChange}
+          onValidate={this.handleLastNameValidate}
         />
         <Select
+          required
           className={cx('registerForm__input')}
           label="GENDER"
           defaultValue={gender}
@@ -258,6 +338,7 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
           type="register"
           rules={dateRules}
           value={birthday}
+          onEnterKeyUp={this.handleFinishEnter}
           onChange={this.handleBirthdayChange}
           onValidate={this.handleBirthdayValidate}
         />
@@ -265,14 +346,7 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
           className={cx('registerForm__create')}
           disabled={!this.canSubmit}
         >
-          Create account
-        </Button>
-        <Button
-          className={cx('registerForm__back')}
-          onClick={this.handleBackClick}
-          type="secondary"
-        >
-          Back
+          Finish
         </Button>
       </>
     );

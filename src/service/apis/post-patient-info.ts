@@ -8,9 +8,12 @@ interface PostPatientInfoRequest {
   healthInformation: Record<string, any>;
 }
 
-export function postPatientInfo(data: PostPatientInfoRequest) {
-  return ajax({
+export async function postPatientInfo(data: PostPatientInfoRequest) {
+  const res = await ajax({
+    auth: true,
     url: '/patient/information',
     method: 'POST',
+    data,
   });
+  return res;
 }
