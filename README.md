@@ -13,26 +13,28 @@ Spring应用的前端项目，本项目为上海纽约大学2019秋季学期 *So
 
 ## 安装
 
+推荐使用 `yarn` 作为包管理工具，[下载地址](https://yarnpkg.com/en/docs/install)
+
 ```bash
-npm install # 安装依赖
+yarn # 安装依赖
 ```
 
 ### 开发环境下使用，启动热模块重载(HMR)功能
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 ### 生产环境下使用，打包出压缩后的文件
 
 ```bash
-npm run build
+yarn build
 ```
 
 ### 删除依赖
 
 ```bash
-npm run clean
+yarn clean
 ```
 
 ## 项目结构
