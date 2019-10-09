@@ -8,7 +8,7 @@ import Input, { Rule } from '@/components/Input';
 import Button from '@/components/Button';
 import Select, { Option } from '@/components/Select';
 import { EMAIL_REGEX, DATE_REGEX } from '@/constants';
-import { register, postPatientInfo } from '@/service';
+import { register, postPatientInfo, viewPatientInfo } from '@/service';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -164,6 +164,7 @@ export default class RegisterForm extends PureComponent<RegisterFormProps, Regis
       birthday,
       healthInformation: {},
     });
+    await viewPatientInfo();
     const { routerStore } = this.props;
     routerStore!.push('/user');
   }

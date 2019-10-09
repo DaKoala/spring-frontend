@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import styles from './index.less';
 import UserStore from '@/stores/user';
 import { formatDate } from '@/utils/time';
+import InfoItem from '@/components/InfoItem';
 
 const cx = classNames.bind(styles);
 
@@ -17,7 +18,7 @@ export default class Profile extends PureComponent<ProfileProps> {
   get displayGender(): string {
     const { userStore } = this.props;
     const { gender } = userStore!;
-    return `${gender[0].toUpperCase()}${gender.substring(1)}`;
+    return `${gender.substring(0, 1).toUpperCase()}${gender.substring(1)}`;
   }
 
   get displayBirthday(): string {
@@ -36,6 +37,9 @@ export default class Profile extends PureComponent<ProfileProps> {
           <span>{this.displayGender}</span>
           <span>{this.displayBirthday}</span>
         </div>
+        <InfoItem label="ALLERGIES" />
+        <InfoItem label="CHORONIC DISEASES" />
+        <InfoItem label="MEDICAL HISTORY" />
       </div>
     );
   }

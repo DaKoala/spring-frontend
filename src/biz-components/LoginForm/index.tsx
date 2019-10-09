@@ -6,7 +6,7 @@ import { inject, observer } from 'mobx-react';
 import Input from '@/components/Input';
 import Button from '@/components/Button';
 import RouterStore from '@/stores/router';
-import { login } from '@/service';
+import { login, viewPatientInfo } from '@/service';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -55,6 +55,7 @@ export default class LoginForm extends PureComponent<LoginFormProps, LoginFormSt
       email,
       password,
     });
+    await viewPatientInfo();
     routerStore!.push('/user');
   }
 

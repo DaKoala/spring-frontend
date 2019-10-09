@@ -1,10 +1,13 @@
 import React, { PureComponent } from 'react';
+import autobind from 'autobind-decorator';
 import { NavLink } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames/bind';
 import Brand from '@/components/Brand';
 import Icon from '@/components/Icon';
 import UserStore from '@/stores/user';
+import RouterStore from '@/stores/router';
+import { deleteToken } from '@/service/cookie';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -27,11 +30,23 @@ const MenuItem: React.FunctionComponent<MenuItemProps> = (props: MenuItemProps) 
 
 interface UserMenuProps {
   userStore?: UserStore;
+  routerStore?: RouterStore;
 }
 
-@inject('userStore')
+@inject('userStore', 'routerStore')
 @observer
 export default class UserMenu extends PureComponent<UserMenuProps> {
+  @autobind
+  handleLogOut() {
+    const isSure = window.confirm('Are you sure to log out?');
+    if (!isSure) {
+      return;
+    }
+    deleteToken();
+    const { routerStore } = this.props;
+    routerStore!.push('/');
+  }
+
   renderStatus() {
     const { userStore } = this.props;
     const { fullName } = userStore!;
@@ -67,7 +82,7 @@ export default class UserMenu extends PureComponent<UserMenuProps> {
           <Icon name="profile" />
           <span>My profile</span>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={this.handleLogOut}>
           <Icon name="log-out" />
           <span>Log out</span>
         </MenuItem>
