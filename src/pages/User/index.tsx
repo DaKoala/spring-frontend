@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Route } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import UserMenu from '@/biz-components/UserMenu';
+import Profile from '@/pages/Profile';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -12,7 +13,7 @@ export default class User extends PureComponent {
       <>
         <UserMenu />
         <div className={cx('main')}>
-
+          <Route path="/user" component={Profile} />
         </div>
       </>
     );

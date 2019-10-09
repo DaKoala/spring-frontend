@@ -15,7 +15,7 @@ interface MenuItemProps {
 
 const MenuItem: React.FunctionComponent<MenuItemProps> = (props: MenuItemProps) => {
   const { to, onClick, children } = props;
-  const clickHandler = (e: React.MouseEvent<HTMLAnchorElement>) => { onClick && onClick(e) };
+  const clickHandler = (e: React.MouseEvent<HTMLAnchorElement>) => { onClick && onClick(e); };
   return to ? (
     <NavLink exact to={to} onClick={clickHandler} className={cx('menu__item')} activeClassName={cx('menu__item--active')}>{children}</NavLink>
   ) : (

@@ -3,11 +3,11 @@ import { observable, action, computed } from 'mobx';
 export default class UserStore {
   @observable email = '';
 
-  @observable firstName = '';
+  @observable firstName = 'Billy';
 
-  @observable lastName = '';
+  @observable lastName = 'Zou';
 
-  @observable gender = '';
+  @observable gender = 'male';
 
   @observable birthday = 0;
 
