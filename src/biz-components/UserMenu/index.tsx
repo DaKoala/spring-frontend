@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import { NavLink } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
 import classNames from 'classnames/bind';
 import Brand from '@/components/Brand';
 import Icon from '@/components/Icon';
+import UserStore from '@/stores/user';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -23,7 +25,24 @@ const MenuItem: React.FunctionComponent<MenuItemProps> = (props: MenuItemProps) 
   );
 };
 
-export default class UserMenu extends PureComponent {
+interface UserMenuProps {
+  userStore?: UserStore;
+}
+
+@inject('userStore')
+@observer
+export default class UserMenu extends PureComponent<UserMenuProps> {
+  renderStatus() {
+    const { userStore } = this.props;
+    const { fullName } = userStore!;
+    return (
+      <div className={cx('menu__status')}>
+        <span>Signed in as</span>
+        <span className={cx('menu__status--name')}>{fullName}</span>
+      </div>
+    );
+  }
+
   render() {
     return (
       <nav className={cx('menu')}>
@@ -52,6 +71,7 @@ export default class UserMenu extends PureComponent {
           <Icon name="log-out" />
           <span>Log out</span>
         </MenuItem>
+        {this.renderStatus()}
       </nav>
     );
   }
