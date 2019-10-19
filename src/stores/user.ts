@@ -1,4 +1,5 @@
 import { observable, action, computed } from 'mobx';
+import { Role } from '@/constants';
 
 export default class UserStore {
   @observable email = '';
@@ -10,6 +11,8 @@ export default class UserStore {
   @observable gender = '';
 
   @observable birthday = 0;
+
+  @observable role: Role = 'PATIENT';
 
   @computed
   get fullName(): string {

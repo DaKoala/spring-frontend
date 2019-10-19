@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames/bind';
 import Brand from '@/components/Brand';
-import Icon from '@/components/Icon';
+import Icon, { IconName } from '@/components/Icon';
 import UserStore from '@/stores/user';
 import RouterStore from '@/stores/router';
 import { deleteToken } from '@/service/cookie';
@@ -28,6 +28,12 @@ const MenuItem: React.FunctionComponent<MenuItemProps> = (props: MenuItemProps) 
   );
 };
 
+interface MenuItemConfig {
+  to: string;
+  iconName: IconName;
+  text: string;
+}
+
 interface UserMenuProps {
   userStore?: UserStore;
   routerStore?: RouterStore;
@@ -36,6 +42,48 @@ interface UserMenuProps {
 @inject('userStore', 'routerStore')
 @observer
 export default class UserMenu extends PureComponent<UserMenuProps> {
+  private dashboardConfig: MenuItemConfig = {
+    to: '/user',
+    iconName: 'dashboard',
+    text: 'Dashboard',
+  };
+
+  private profileConfig: MenuItemConfig = {
+    to: '/user/profile',
+    iconName: 'profile',
+    text: 'My profile',
+  };
+
+  private patientConfig: MenuItemConfig[] = [
+    this.dashboardConfig,
+    {
+      to: '/user/records',
+      iconName: 'records',
+      text: 'Medical records',
+    },
+    {
+      to: '/user/appointment',
+      iconName: 'appointment',
+      text: 'Make appointment',
+    },
+    {
+      to: '/user/consult',
+      iconName: 'consult',
+      text: 'Urgent consult',
+    },
+    this.profileConfig,
+  ];
+
+  private doctorConfig: MenuItemConfig[] = [
+    this.dashboardConfig,
+    {
+      to: '/user/timeslot',
+      iconName: 'appointment',
+      text: 'Time Slots',
+    },
+    this.profileConfig,
+  ]
+
   @autobind
   handleLogOut() {
     const isSure = window.confirm('Are you sure to log out?');
@@ -58,30 +106,30 @@ export default class UserMenu extends PureComponent<UserMenuProps> {
     );
   }
 
+  renderItems() {
+    const { userStore } = this.props;
+    let config: MenuItemConfig[];
+    if (userStore.role === 'PATIENT') {
+      config = this.patientConfig;
+    } else {
+      config = this.doctorConfig;
+    }
+    return config.map((itemConfig) => {
+      const { to, iconName, text } = itemConfig;
+      return (
+        <MenuItem key={to} to={to}>
+          <Icon name={iconName} />
+          {text}
+        </MenuItem>
+      );
+    });
+  }
+
   render() {
     return (
       <nav className={cx('menu')}>
         <Brand className={cx('menu__brand')} />
-        <MenuItem to="/user">
-          <Icon name="dashboard" />
-          <span>Dashboard</span>
-        </MenuItem>
-        <MenuItem to="/user/records">
-          <Icon name="records" />
-          <span>Medical records</span>
-        </MenuItem>
-        <MenuItem to="/user/appointment">
-          <Icon name="appointment" />
-          Make appointment
-        </MenuItem>
-        <MenuItem to="/user/consult">
-          <Icon name="consult" />
-          <span>Urgent consult</span>
-        </MenuItem>
-        <MenuItem to="/user/profile">
-          <Icon name="profile" />
-          <span>My profile</span>
-        </MenuItem>
+        {this.renderItems()}
         <MenuItem onClick={this.handleLogOut}>
           <Icon name="log-out" />
           <span>Log out</span>

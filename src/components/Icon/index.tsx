@@ -20,8 +20,10 @@ const iconMap = {
   records,
 };
 
+export type IconName = keyof typeof iconMap;
+
 interface IconProps {
-  name: keyof typeof iconMap;
+  name: IconName;
   className: string;
 }
 
