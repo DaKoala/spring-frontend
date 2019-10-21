@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 import './index.less';
-import { viewPatientInfo } from '@/service';
+import { viewPersonalInfo } from '@/service';
 import { getToken } from '@/service/cookie';
 import { userStoreInstance } from '@/stores/user';
 import { routerStoreInstance, history } from '@/stores/router';
@@ -15,7 +15,7 @@ export default class App extends React.PureComponent {
   async componentDidMount() {
     const token = getToken();
     if (token) {
-      await viewPatientInfo();
+      await viewPersonalInfo();
       routerStoreInstance.push('/user');
     }
   }
