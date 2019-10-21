@@ -1,5 +1,6 @@
 import ajax from '../base';
 import { setToken } from '../cookie';
+import { userStoreInstance } from '@/stores/user';
 import { Role } from '@/constants';
 
 interface LoginRequest {
@@ -18,8 +19,7 @@ export async function login(data: LoginRequest) {
     method: 'POST',
     data,
   });
-  if (res.success) {
-    setToken(res.data.token);
-  }
+  setToken(res.data.token);
+  userStoreInstance.setRole(res.data.role);
   return res;
 }
