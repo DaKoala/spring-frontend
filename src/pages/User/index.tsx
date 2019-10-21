@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { Route } from "react-router-dom";
 import classNames from "classnames/bind";
 import UserMenu from "@/biz-components/UserMenu";
-//import Profile from "@/pages/Profile";
+import Profile from "@/pages/Profile";
 import ProfileDoc from "@/pages/ProfileDoc";
 import styles from "./index.less";
 
