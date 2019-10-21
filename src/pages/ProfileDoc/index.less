@@ -1,0 +1,28 @@
+@import "../../styles/variables.less";
+
+.profile {
+  min-width: 760px;
+  width: 100%;
+  height: 100%;
+  padding: 50px 123px 0 50px;
+}
+.profile__name {
+  font-size: 24px;
+  line-height: 29px;
+  color: @text-black;
+}
+.profile__title {
+  margin-top: 50px;
+  font-size: 20px;
+  font-weight: bold;
+  color: @text-black;
+}
+.profile__support {
+  margin-top: 20px;
+  font-size: 20px;
+  color: @text-black;
+  span + span::before {
+    content: "|";
+    margin: 0 5px;
+  }
+}

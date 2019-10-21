@@ -1,18 +1,24 @@
-import { observable, action, computed } from 'mobx';
-import { Role } from '@/constants';
+import { observable, action, computed } from "mobx";
+import { Role } from "@/constants";
 
 export default class UserStore {
-  @observable email = '';
+  @observable email = "";
 
-  @observable firstName = '';
+  @observable firstName = "";
 
-  @observable lastName = '';
+  @observable lastName = "";
 
-  @observable gender = '';
+  @observable gender = "";
+
+  @observable title = "";
+
+  @observable department = "";
+
+  @observable hospital = "";
 
   @observable birthday = 0;
 
-  @observable role: Role = 'PATIENT';
+  @observable role: Role = "DOCTOR";
 
   @computed
   get fullName(): string {
@@ -37,6 +43,21 @@ export default class UserStore {
   @action
   setGender(gender: string) {
     this.gender = gender;
+  }
+
+  @action
+  setTitle(title: string) {
+    this.title = title;
+  }
+
+  @action
+  setDepartment(department: string) {
+    this.department = department;
+  }
+
+  @action
+  setHospital(hospital: string) {
+    this.hospital = hospital;
   }
 
   @action
