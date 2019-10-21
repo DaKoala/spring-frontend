@@ -9,7 +9,7 @@ import InfoItem from '@/components/InfoItem';
 const cx = classNames.bind(styles);
 
 interface ProfileProps {
-  userStore?: UserStore;
+  userStore: UserStore;
 }
 
 @inject('userStore')
@@ -17,19 +17,19 @@ interface ProfileProps {
 export default class Profile extends PureComponent<ProfileProps> {
   get displayGender(): string {
     const { userStore } = this.props;
-    const { gender } = userStore!;
+    const { gender } = userStore;
     return `${gender.substring(0, 1).toUpperCase()}${gender.substring(1)}`;
   }
 
   get displayBirthday(): string {
     const { userStore } = this.props;
-    const { birthday } = userStore!;
+    const { birthday } = userStore;
     return formatDate(birthday, 'YYYY-MM-DD');
   }
 
   render() {
     const { userStore } = this.props;
-    const { fullName } = userStore!;
+    const { fullName } = userStore;
     return (
       <div className={cx('profile')}>
         <div className={cx('profile__name')}>{fullName}</div>

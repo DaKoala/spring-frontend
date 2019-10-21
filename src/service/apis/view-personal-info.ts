@@ -1,7 +1,7 @@
 import ajax from '../base';
 import { userStoreInstance } from '@/stores/user';
 
-interface ViewPatientInfoResponse {
+interface ViewPersonalInfoResponse {
   birthday: number;
   firstName: string;
   lastName: string;
@@ -10,10 +10,10 @@ interface ViewPatientInfoResponse {
   patientEmail: string;
 }
 
-export async function viewPatientInfo() {
-  const res = await ajax<ViewPatientInfoResponse>({
+export async function viewPersonalInfo() {
+  const res = await ajax<ViewPersonalInfoResponse>({
     auth: true,
-    url: '/patient/information',
+    url: '/information',
   });
   const { data } = res;
   userStoreInstance.setEmail(data.patientEmail);

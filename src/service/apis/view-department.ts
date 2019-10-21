@@ -14,4 +14,5 @@ export async function viewDepartment(data: ViewDepartmentRequest) {
     data,
   });
   userStoreInstance.setDepartments(res.data);
+  return res;
 }
