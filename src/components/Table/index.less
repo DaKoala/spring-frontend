@@ -1,0 +1,30 @@
+@import "../../styles/variables.less";
+
+.table {
+  width: 100%;
+  tr:not(:first-child) {
+    border-bottom: 1px solid @bk-grey;
+  }
+}
+
+.table__head {
+  padding: 11px 0;
+  background-color: @bk-white;
+  color: @text-grey;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 17px;
+  text-align: left;
+  &:first-child {
+    padding-left: 18px;
+  }
+}
+.table__body {
+  padding: 15px 0;
+  font-size: 16px;
+  line-height: 19px;
+  color: @text-grey;
+  &:first-child {
+    padding-left: 18px;
+  }
+}
