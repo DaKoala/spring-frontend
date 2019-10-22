@@ -6,6 +6,7 @@
   "scripts": {
     "build": "rm -rf ./dist && webpack --config webpack.prod.js",
     "dev": "webpack-dev-server --config webpack.dev.js --open",
+    "lint": "eslint --ext .ts,.tsx src/ --fix",
     "clean": "rm -rf ./node_modules"
   },
   "keywords": [],

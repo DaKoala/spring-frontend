@@ -59,7 +59,7 @@ export default class UserMenu extends PureComponent<UserMenuProps> {
   private dashboardConfig: MenuItemConfig = {
     to: '/user',
     iconName: 'dashboard',
-    text: 'Dashboard'
+    text: 'Dashboard',
   };
 
   private patientConfig: MenuItemConfig[] = [
@@ -67,23 +67,23 @@ export default class UserMenu extends PureComponent<UserMenuProps> {
     {
       to: '/user/records',
       iconName: 'records',
-      text: 'Medical records'
+      text: 'Medical records',
     },
     {
       to: '/user/appointment',
       iconName: 'appointment',
-      text: 'Make appointment'
+      text: 'Make appointment',
     },
     {
       to: '/user/consult',
       iconName: 'consult',
-      text: 'Urgent consult'
+      text: 'Urgent consult',
     },
     {
       to: '/user/profile',
       iconName: 'profile',
-      text: 'My profile'
-    }
+      text: 'My profile',
+    },
   ];
 
   private doctorConfig: MenuItemConfig[] = [
@@ -96,8 +96,8 @@ export default class UserMenu extends PureComponent<UserMenuProps> {
     {
       to: '/user/profileDoc',
       iconName: 'profile',
-      text: 'My profile'
-    }
+      text: 'My profile',
+    },
   ];
 
   @autobind
@@ -130,7 +130,7 @@ export default class UserMenu extends PureComponent<UserMenuProps> {
     } else {
       config = this.doctorConfig;
     }
-    return config.map(itemConfig => {
+    return config.map((itemConfig) => {
       const { to, iconName, text } = itemConfig;
       return (
         <MenuItem key={to} to={to}>
@@ -147,7 +147,7 @@ export default class UserMenu extends PureComponent<UserMenuProps> {
         <Brand className={cx('menu__brand')} />
         {this.renderItems()}
         <MenuItem onClick={this.handleLogOut}>
-          <Icon name='log-out' />
+          <Icon name="log-out" />
           <span>Log out</span>
         </MenuItem>
         {this.renderStatus()}

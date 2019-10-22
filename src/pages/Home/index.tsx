@@ -23,9 +23,15 @@ export default class Home extends PureComponent {
       <div>
         <p className={cx('desc__title')}>Best Care & Best Doctor.</p>
         <p className={cx('desc__subtitle')}>
-          <span>An easy-to-use tool for patients to track their health history and better understand their physical conditions.</span>
+          <span>
+            An easy-to-use tool for patients to track
+            their health history and better understand their physical conditions.
+          </span>
           <br />
-          <span>A consistent record system for patients, doctors and the hospital staff, and facilitates the communication among the three parts.</span>
+          <span>
+            A consistent record system for patients, doctors and
+            the hospital staff, and facilitates the communication among the three parts.
+          </span>
         </p>
         <Button className={cx('desc__btn')} size="big">Check out our plans ➔</Button>
       </div>
