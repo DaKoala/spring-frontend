@@ -20,8 +20,6 @@ export default class UserStore {
 
   @observable role: Role = 'DOCTOR';
 
-  @observable departments: Department[] = [];
-
   @computed
   get fullName(): string {
     return `${this.firstName} ${this.lastName}`;
@@ -70,11 +68,6 @@ export default class UserStore {
   @action
   setRole(role: Role) {
     this.role = role;
-  }
-
-  @action
-  setDepartments(departments: Department[]) {
-    this.departments = departments;
   }
 }
 
