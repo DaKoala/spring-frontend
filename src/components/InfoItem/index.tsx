@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent } from 'react';
 import classNames from 'classnames/bind';
 import styles from './index.less';
 
@@ -30,7 +30,6 @@ export default class InfoItem extends PureComponent<InfoItemProps> {
           {this.displayContent}
         </div>
       </div>
-    )
+    );
   }
 }
-

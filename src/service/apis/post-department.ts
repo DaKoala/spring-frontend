@@ -5,10 +5,11 @@ interface PostDepartmentRequest {
 }
 
 export async function postDepartment(data: PostDepartmentRequest) {
-  return await ajax({
+  const res = await ajax({
     auth: true,
     method: 'POST',
     url: '/hospital/department',
     data,
   });
+  return res;
 }
