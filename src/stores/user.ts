@@ -2,23 +2,23 @@ import { observable, action, computed } from 'mobx';
 import { Role, Department } from '@/constants';
 
 export default class UserStore {
-  @observable email = "";
+  @observable email = '';
 
-  @observable firstName = "";
+  @observable firstName = '';
 
-  @observable lastName = "";
+  @observable lastName = '';
 
-  @observable gender = "";
+  @observable gender = '';
 
-  @observable title = "";
+  @observable title = '';
 
-  @observable department = "";
+  @observable department = '';
 
-  @observable hospital = "";
+  @observable hospital = '';
 
   @observable birthday = 0;
 
-  @observable role: Role = "DOCTOR";
+  @observable role: Role = 'DOCTOR';
 
   @observable departments: Department[] = [];
 

@@ -1,16 +1,30 @@
 import React, { PureComponent } from 'react';
 import autobind from 'autobind-decorator';
+import { inject, observer } from 'mobx-react';
 import { Route } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import UserMenu from '@/biz-components/UserMenu';
-import Profile from '@/pages/Profile';
-import ProfileDoc from '@/pages/ProfileDoc';
-import { viewDepartment, postDepartment, postDoctorInfo, viewHospital, searchDoctor } from '@/service';
+import ProfilePatient from '@/pages/ProfilePatient';
+import ProfileDoctor from '@/pages/ProfileDoctor';
+import UserStore from '@/stores/user';
+import {
+  viewDepartment,
+  postDepartment,
+  postDoctorInfo,
+  viewHospital,
+  searchDoctor,
+} from '@/service';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
 
-export default class User extends PureComponent {
+interface UserProps {
+  userStore?: UserStore;
+}
+
+@inject('userStore')
+@observer
+export default class User extends PureComponent<UserProps> {
   @autobind
   async viewDepartmentFunc() {
     const res = await viewDepartment({
@@ -57,6 +71,8 @@ export default class User extends PureComponent {
   }
 
   render() {
+    const { userStore } = this.props;
+    const UserComponent = userStore!.role === 'PATIENT' ? ProfilePatient : ProfileDoctor;
     return (
       <>
         <UserMenu />
@@ -66,7 +82,7 @@ export default class User extends PureComponent {
           <button type="button" onClick={this.postDoctorInfoFunc}>Post Doctor Info</button>
           <button type="button" onClick={this.viewHospitalFunc}>View Hospital</button>
           <button type="button" onClick={this.searchDoctorFunc}>Search Doctor</button>
-          <Route path="/user" component={ProfileDoc} />
+          <Route path="/user" component={UserComponent} />
         </div>
       </>
     );

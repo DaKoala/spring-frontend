@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import classNames from 'classnames/bind';
 import styles from './index.less';
 import UserStore from '@/stores/user';
-import { formatDate } from '@/utils/time';
+import formatDate from '@/utils/time';
 import InfoItem from '@/components/InfoItem';
 
 const cx = classNames.bind(styles);
