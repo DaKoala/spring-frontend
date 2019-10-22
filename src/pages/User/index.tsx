@@ -6,6 +6,7 @@ import classNames from 'classnames/bind';
 import UserMenu from '@/biz-components/UserMenu';
 import ProfilePatient from '@/pages/ProfilePatient';
 import ProfileDoctor from '@/pages/ProfileDoctor';
+import Hospital from '@/pages/Hospital';
 import UserStore from '@/stores/user';
 import {
   viewDepartment,
@@ -72,17 +73,19 @@ export default class User extends PureComponent<UserProps> {
 
   render() {
     const { userStore } = this.props;
-    const UserComponent = userStore!.role === 'PATIENT' ? ProfilePatient : ProfileDoctor;
+    const isPatient = userStore!.role === 'PATIENT';
+    const ProfileComponent = isPatient ? ProfilePatient : ProfileDoctor;
     return (
       <>
         <UserMenu />
         <div className={cx('main')}>
-          <button type="button" onClick={this.viewDepartmentFunc}>View Department</button>
+          {/* <button type="button" onClick={this.viewDepartmentFunc}>View Department</button>
           <button type="button" onClick={this.postDepartmentFunc}>Post Department</button>
           <button type="button" onClick={this.postDoctorInfoFunc}>Post Doctor Info</button>
           <button type="button" onClick={this.viewHospitalFunc}>View Hospital</button>
-          <button type="button" onClick={this.searchDoctorFunc}>Search Doctor</button>
-          <Route path="/user" component={UserComponent} />
+          <button type="button" onClick={this.searchDoctorFunc}>Search Doctor</button> */}
+          <Route exact path="/user" component={Hospital} />
+          <Route path="/user/profile" component={ProfileComponent} />
         </div>
       </>
     );

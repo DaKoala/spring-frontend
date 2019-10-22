@@ -21,14 +21,6 @@ interface TableProps<T extends Indexable> {
   columns: Column<T>[];
 }
 
-interface Data {
-  key: string;
-  name: string;
-  title: string;
-  gender: string;
-  birthday: string;
-}
-
 export default class Table<T extends Indexable> extends PureComponent<TableProps<T>> {
   renderTableHead() {
     const { columns } = this.props;
