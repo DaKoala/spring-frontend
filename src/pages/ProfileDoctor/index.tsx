@@ -29,14 +29,14 @@ export default class ProfileDoctor extends PureComponent<ProfileProps> {
 
   get displayHospital(): string {
     const { userStore } = this.props;
-    const { hospital } = userStore!;
-    return capitalize(hospital);
+    const { hospitalName } = userStore!;
+    return capitalize(hospitalName);
   }
 
   get displayDepartment(): string {
     const { userStore } = this.props;
-    const { department } = userStore!;
-    return capitalize(department);
+    const { departmentName } = userStore!;
+    return capitalize(String(departmentName));
   }
 
   get displayTitle(): string {

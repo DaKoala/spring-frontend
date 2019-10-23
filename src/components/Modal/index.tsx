@@ -14,7 +14,6 @@ interface ModalProps {
 export default class Modal extends PureComponent<ModalProps> {
   @autobind
   handleMaskClick(e: React.MouseEvent) {
-    e.stopPropagation();
     const { onMaskClick } = this.props;
     onMaskClick && onMaskClick(e);
   }
@@ -22,7 +21,8 @@ export default class Modal extends PureComponent<ModalProps> {
   render() {
     const { visible, children } = this.props;
     return visible ? (
-      <div className={cx('modal__mask')} onClickCapture={this.handleMaskClick}>
+      <div className={cx('modal')}>
+        <div className={cx('modal__mask')} onClick={this.handleMaskClick} />
         <div className={cx('modal__window')}>
           {children}
         </div>
