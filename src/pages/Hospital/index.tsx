@@ -170,10 +170,10 @@ export default class Hospital extends PureComponent<HospitalProps, HospitalState
       <div className={cx('hospital')}>
         {pageContent}
         <Modal visible={isAddingDepartment} onMaskClick={this.handleClickClose}>
-          <div className={cx('modal')}>
-            <div className={cx('modal__title')}>New Department</div>
-            <Input onChange={this.handleDepartmentNameChange} className={cx('modal__input')} label="" placeholder="name" type="register" />
-            <div className={cx('modal__buttons')}>
+          <div className={cx('depModal')}>
+            <div className={cx('depModal__title')}>New Department</div>
+            <Input onChange={this.handleDepartmentNameChange} className={cx('depModal__input')} label="" placeholder="name" type="register" />
+            <div className={cx('depModal__buttons')}>
               <Button onClick={this.closeModal} type="secondary">Cancel</Button>
               <Button onClick={this.handleDepartmentCreate}>Create</Button>
             </div>
