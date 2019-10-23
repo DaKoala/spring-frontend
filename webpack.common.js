@@ -22,7 +22,7 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: isProd ? '[hash:base64:8]' : '[local]--[hash:base64:5]',
+                localIdentName: isProd ? '[hash:base64:8]' : '[local]',
               },
             },
           },
