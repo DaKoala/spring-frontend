@@ -16,7 +16,7 @@ export interface Rule {
 interface InputProps {
   className: string;
   label: string;
-  type: 'login' | 'register';
+  type: 'login' | 'register' | 'timeslot';
   textType: 'text' | 'password';
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   onEnterKeyUp: () => void;

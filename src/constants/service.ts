@@ -6,6 +6,12 @@ export interface Department {
   hospitalId: string;
 }
 
+export interface TimeSlotFormat{
+  date: string;
+  startTime: string;
+  seat: number;
+}
+
 export interface Doctor {
   birthday: number;
   departmentId: number;

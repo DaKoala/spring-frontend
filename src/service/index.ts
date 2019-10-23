@@ -8,3 +8,5 @@ export * from './apis/view-department';
 export * from './apis/post-department';
 export * from './apis/view-hospital';
 export * from './apis/search-doctor';
+export * from './apis/view-doctor-timeslot';
+export * from './apis/post-doctor-timeslot';
