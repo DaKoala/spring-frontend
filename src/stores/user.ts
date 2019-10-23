@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx';
-import { Role, Department } from '@/constants';
+import { Role } from '@/constants';
 
 export default class UserStore {
   @observable email = '';
@@ -12,9 +12,13 @@ export default class UserStore {
 
   @observable title = '';
 
-  @observable department = '';
+  @observable departmentId = 0;
 
-  @observable hospital = '';
+  @observable departmentName = '';
+
+  @observable hospitalId = '';
+
+  @observable hospitalName = '';
 
   @observable birthday = 0;
 
@@ -22,6 +26,9 @@ export default class UserStore {
 
   @computed
   get fullName(): string {
+    if (this.role === 'HOSPITAL') {
+      return this.hospitalName;
+    }
     return `${this.firstName} ${this.lastName}`;
   }
 
@@ -51,13 +58,23 @@ export default class UserStore {
   }
 
   @action
-  setDepartment(department: string) {
-    this.department = department;
+  setDepartmentId(departmentId: number) {
+    this.departmentId = departmentId;
   }
 
   @action
-  setHospital(hospital: string) {
-    this.hospital = hospital;
+  setDepartmentName(departmentName: string) {
+    this.departmentName = departmentName;
+  }
+
+  @action
+  setHospitalId(hospitalId: string) {
+    this.hospitalId = hospitalId;
+  }
+
+  @action
+  setHospitalName(hospitalName: string) {
+    this.hospitalName = hospitalName;
   }
 
   @action

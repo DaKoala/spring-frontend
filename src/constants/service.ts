@@ -1,9 +1,9 @@
-export type Role = 'PATIENT' | 'DOCTOR' | 'STAFF';
+export type Role = 'PATIENT' | 'DOCTOR' | 'STAFF' | 'HOSPITAL';
 
 export interface Department {
   departmentId: number;
   departmentName: string;
-  hospitalId: number;
+  hospitalId: string;
 }
 
 export interface Doctor {
@@ -18,6 +18,6 @@ export interface Doctor {
 }
 
 export interface Hospital {
-  hospitalId: number;
+  hospitalId: string;
   hospitalName: string;
 }

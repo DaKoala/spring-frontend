@@ -1,18 +1,15 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames/bind';
+import { Indexable } from '@/constants';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
 
-interface Column<T> {
+export interface Column<T> {
   key: string;
   title: string;
   width: string;
   render(item: T, index: number): React.ReactNode;
-}
-
-interface Indexable {
-  key: string;
 }
 
 interface TableProps<T extends Indexable> {
@@ -32,9 +29,9 @@ export default class Table<T extends Indexable> extends PureComponent<TableProps
       );
     });
     return (
-      <tr>
-        {heads}
-      </tr>
+      <thead>
+        <tr>{heads}</tr>
+      </thead>
     );
   }
 
@@ -51,9 +48,9 @@ export default class Table<T extends Indexable> extends PureComponent<TableProps
       });
       const { key } = item;
       return (
-        <tr key={key}>
-          {cells}
-        </tr>
+        <tbody key={key}>
+          <tr>{cells}</tr>
+        </tbody>
       );
     });
   }

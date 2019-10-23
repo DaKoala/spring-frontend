@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getToken } from './cookie';
 
-const BASE_URL = 'https://62169e25.ngrok.io';
+const BASE_URL = 'http://56c11681.ngrok.io';
 
 function transformData(data?: Record<string, any>) {
   if (!data) {
