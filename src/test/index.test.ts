@@ -36,3 +36,20 @@ describe('Login Form', () => {
     expect(url.indexOf('/user') > 0).toBe(true);
   });
 });
+
+describe('Dashboard', () => {
+  it('sidebar should be rendered', async () => {
+    const sidebarLogo = await page.$eval('.menu__brand', (e) => e.textContent);
+    expect(sidebarLogo).toBe('Spring');
+  });
+
+  it('greeting should be rendered', async () => {
+    const greeting = await page.$eval('.hospital__greeting', (e) => e.textContent);
+    expect(greeting).toBe('Hello, Shanghai East International Medical Center.');
+  });
+
+  it('department table head should be rendered', async () => {
+    const tableHead = await page.$eval('.table__head', (e) => e.textContent);
+    expect(tableHead).toBe('NAME');
+  });
+});
