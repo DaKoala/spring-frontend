@@ -4,6 +4,7 @@ interface PostDoctorTimeSlotRequest {
   seat: number;
   date: string;
   startTime: string;
+  numTimeSlot: number;
 }
 
 export async function postDoctorTimeslot(data: PostDoctorTimeSlotRequest) {
