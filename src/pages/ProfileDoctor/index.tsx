@@ -62,6 +62,5 @@ export default class ProfileDoctor extends PureComponent<ProfileProps> {
         </div>
       </div>
     );
-    return null;
   }
 }
