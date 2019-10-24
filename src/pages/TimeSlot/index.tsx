@@ -90,7 +90,7 @@ export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> 
     });
     const timeslots = res.data.map((ts, index) => {
       var date = new Date(ts.date);
-      ts.date = date.getDate().toString();
+      ts.date = date.getFullYear().toString() + "-" + (date.getMonth()+1).toString() + "-"+date.getDate().toString();
       const timeslotWithKey = ts as (TimeSlotFormat & Indexable);
       timeslotWithKey.key = String(index);
 
@@ -121,7 +121,7 @@ export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> 
     const start1 = parseInt(startTime.split(":")[0])
     const start2 = parseInt(startTime.split(":")[1])
 
-    const numTimeSlot = Math.round((end1 - start1)/2 + (end2 - start2)/30)
+    const numTimeSlot = Math.round((end1 - start1)*2 + (end2 - start2)/30)
 
     await postDoctorTimeslot({
       date,
