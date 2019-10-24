@@ -5,7 +5,7 @@ beforeAll(async () => {
 describe('Home page', () => {
   it('page should be titled spring', async () => {
     const title = await page.title();
-    expect(title).toBe('Spring');
+    expect(title).toBe('spring');
   });
 
   it('page should have a logo', async () => {
@@ -30,7 +30,7 @@ describe('Login Form', () => {
   });
 
   it('can log in', async () => {
-    await page.$eval('.login button', (e: HTMLButtonElement) => e.click());
+    await page.click('.login button');
     await page.waitForNavigation();
     const url = page.url();
     expect(url.indexOf('/user') > 0).toBe(true);
@@ -51,5 +51,11 @@ describe('Dashboard', () => {
   it('department table head should be rendered', async () => {
     const tableHead = await page.$eval('.table__head', (e) => e.textContent);
     expect(tableHead).toBe('NAME');
+  });
+
+  it('department list should be retrieved', async () => {
+    await page.waitForSelector('tbody');
+    const departmentLength = await page.$$eval('tbody', (list) => list.length);
+    expect(departmentLength).toBe(11);
   });
 });
