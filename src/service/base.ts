@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosPromise } from 'axios';
 import { getToken } from './cookie';
 
-export const BASE_URL = 'https://abc96484.ngrok.io';
+export const BASE_URL = 'https://5a77f725.ngrok.io';
 
 function transformData(data?: Record<string, any>) {
   if (!data) {
@@ -71,13 +71,14 @@ export default async function ajax<T = null>(options: RequestOptions) {
     alert(errorMsg);
     throw new Error(errorMsg);
   }
-  const { data: resData } = response;
+  const resData = JSON.parse(response.data);
   if (!resData.success || resData.code !== 200) {
     alert(resData.message);
     throw new Error(resData.message);
   }
-  if (typeof response.data.data === 'string') {
-    response.data.data = JSON.parse(response.data.data);
+  console.log(resData.data);
+  if (typeof resData.data === 'string') {
+    resData.data = JSON.parse(resData.data);
   }
-  return response.data as BaseResponse<T>;
+  return resData as BaseResponse<T>;
 }
