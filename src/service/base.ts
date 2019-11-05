@@ -71,12 +71,11 @@ export default async function ajax<T = null>(options: RequestOptions) {
     alert(errorMsg);
     throw new Error(errorMsg);
   }
-  const resData = JSON.parse(response.data);
+  const resData = response.data;
   if (!resData.success || resData.code !== 200) {
     alert(resData.message);
     throw new Error(resData.message);
   }
-  console.log(resData.data);
   if (typeof resData.data === 'string') {
     resData.data = JSON.parse(resData.data);
   }
