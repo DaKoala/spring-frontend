@@ -8,8 +8,10 @@ import animation from '../../styles/animation.less';
 const cx = classNames.bind(styles);
 const ani = classNames.bind(animation);
 
+type OptionValue = string | number;
+
 export interface Option {
-  value: string;
+  value: OptionValue;
   text: string;
 }
 
@@ -17,15 +19,15 @@ interface SelectProps {
   className: string;
   label: string;
   required: boolean;
-  defaultValue?: string;
+  defaultValue?: OptionValue;
   options: Option[];
-  onChange: (value: string) => void;
+  onChange: (value: OptionValue) => void;
 }
 
 interface SelectState {
   expanded: boolean;
   currentText: string;
-  currentValue: string;
+  currentValue: OptionValue;
 }
 
 export default class Select extends PureComponent<SelectProps, SelectState> {
