@@ -1,0 +1,50 @@
+@import "../../styles/variables.less";
+@import "../../styles/mixins.less";
+
+.appointment {
+  min-width: 760px;
+  width: 100%;
+  height: 100%;
+  padding: 50px 123px 0 50px;
+}
+.appointment__title {
+  font-size: 24px;
+  line-height: 29px;
+  color: @text-black;
+}
+.appointment__buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+.appointment__name {
+  font-size: 24px;
+  line-height: 29px;
+  color: @text-black;
+}
+.appointment__desc {
+  margin-top: 50px;
+}
+.appointment__indicator {
+  font-size: 14px;
+  font-weight: bold;
+  color: @text-black;
+}
+.appointment__table{
+  margin-top: 35px;
+}
+.appointment__support {
+  margin-top: 20px;
+  font-size: 16px;
+  color: @text-black;
+  span + span::before {
+    content: '|';
+    margin: 0 5px;
+  }
+  margin: 30px 0;
+}
+.appointment__content{
+  margin: 20px 0;
+  background-color: @bk-white;
+  padding: 10px 20px;
+  color: @text-grey;
+}
