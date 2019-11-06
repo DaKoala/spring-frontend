@@ -20,7 +20,7 @@ import {
   postPatientAppointment,
 } from '@/service';
 import appendKey from '@/utils/appendKey';
-import { addMinute } from '@/utils/time';
+import formatDate, { addMinute } from '@/utils/time';
 import RouterStore from '@/stores/router';
 import styles from './index.less';
 
@@ -34,7 +34,7 @@ interface MakeAppointmentState {
   selectedHospital: Hospital;
   selectedDepartment: Department;
   selectedDoctor: Doctor;
-  selectedDate: string;
+  selectedDate: number;
   hospitals: WithIndex<Hospital>[];
   departments: WithIndex<Department>[];
   doctors: WithIndex<Doctor>[];
@@ -48,14 +48,14 @@ export default class MakeAppointment extends Component<MakeAppointmentProps, Mak
     selectedHospital: null,
     selectedDepartment: null,
     selectedDoctor: null,
-    selectedDate: '',
+    selectedDate: 0,
     hospitals: [],
     departments: [],
     doctors: [],
     timeSlots: [],
   }
 
-  private dateOptions: { text: string; value: string }[] = [];
+  private dateOptions: { text: string; value: number }[] = [];
 
   private hospitalColumns: Column<WithIndex<Hospital>>[] = [
     {
@@ -140,7 +140,7 @@ export default class MakeAppointment extends Component<MakeAppointmentProps, Mak
       key: 'date',
       title: 'DATE',
       width: '20%',
-      render: (timeSlot) => timeSlot.date,
+      render: (timeSlot) => formatDate(timeSlot.date, 'MM-DD'),
     },
     {
       key: 'time',
@@ -184,8 +184,14 @@ export default class MakeAppointment extends Component<MakeAppointmentProps, Mak
   }
 
   private generateDateOptions(timeSlots: TimeSlotFormat[]) {
-    const uniqueDates = Array.from(new Set(timeSlots.map((timeSlot) => timeSlot.date)));
-    this.dateOptions = uniqueDates.map((date) => ({ text: date, value: date }));
+    const uniqueDates = Array.from(new Set(timeSlots.map((timeSlot) => timeSlot.date))).sort();
+    this.dateOptions = uniqueDates.map((date) => ({ text: formatDate(date, 'MM-DD'), value: date }));
+  }
+
+  @autobind
+  handleCancel() {
+    const { routerStore } = this.props;
+    routerStore.replace('/user');
   }
 
   @autobind
@@ -244,7 +250,7 @@ export default class MakeAppointment extends Component<MakeAppointmentProps, Mak
   }
 
   @autobind
-  handleSelectDate(date: string) {
+  handleSelectDate(date: number) {
     this.setState({
       selectedDate: date,
     });
@@ -256,7 +262,7 @@ export default class MakeAppointment extends Component<MakeAppointmentProps, Mak
     if (selectedDoctor) {
       this.setState({
         selectedDoctor: null,
-        selectedDate: '',
+        selectedDate: 0,
         timeSlots: [],
       });
     } else if (selectedDepartment) {
@@ -294,7 +300,11 @@ export default class MakeAppointment extends Component<MakeAppointmentProps, Mak
   }
 
   renderSelection() {
-    return <Select label="DATE" options={this.dateOptions} onChange={this.handleSelectDate} />;
+    const { selectedDoctor } = this.state;
+    if (!selectedDoctor) {
+      return null;
+    }
+    return <Select className={cx('dateSelection')} label="DATE" options={this.dateOptions} onChange={this.handleSelectDate} />;
   }
 
   renderContent() {
@@ -314,9 +324,8 @@ export default class MakeAppointment extends Component<MakeAppointmentProps, Mak
       columns = this.doctorColumns;
       dataSource = doctors;
     } else {
-      const { timeSlots } = this.state;
       columns = this.timeSlotColumns;
-      dataSource = timeSlots;
+      dataSource = this.userSelectedTimeSlots;
     }
     return <Table className={cx('dataTable')} columns={columns} dataSource={dataSource} />;
   }
@@ -326,7 +335,7 @@ export default class MakeAppointment extends Component<MakeAppointmentProps, Mak
       <div className={cx('makeAppointment')}>
         <div className={cx('makeAppointment__title')}>
           <div className={cx('title__text')}>Make New Appointment</div>
-          <Button type="secondary">Cancel</Button>
+          <Button onClick={this.handleCancel} type="secondary">Cancel</Button>
         </div>
         {this.renderSubtitle()}
         {this.renderSelection()}

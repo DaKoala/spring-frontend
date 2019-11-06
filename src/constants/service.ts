@@ -8,7 +8,7 @@ export interface Department {
 
 export interface TimeSlotFormat{
   doctorEmail: string;
-  date: string;
+  date: number;
   startTime: string;
   seat: number;
   timeSlotId: number;
