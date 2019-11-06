@@ -11,3 +11,5 @@ export * from './apis/search-doctor-by-department';
 export * from './apis/view-doctor-timeslot';
 export * from './apis/post-doctor-timeslot';
 export * from './apis/post-patient-appointment';
+export * from './apis/view-doctor-appointment';
+export * from './apis/view-patient-appointment';

@@ -91,6 +91,9 @@ interface RegisterFormState {
   genderValid: boolean;
   birthday: string;
   birthdayValid: boolean;
+  allergy: string;
+  disease: string;
+  medicalHistory: string;
 }
 
 @inject('routerStore')
@@ -110,6 +113,9 @@ export default class RegisterForm extends PureComponent<RegisterFormProps, Regis
     genderValid: false,
     birthday: '',
     birthdayValid: false,
+    allergy: '',
+    disease: '',
+    medicalHistory: '',
   }
 
   get canContinue(): boolean {
@@ -156,13 +162,17 @@ export default class RegisterForm extends PureComponent<RegisterFormProps, Regis
       lastName,
       gender,
       birthday,
+      allergy,
+      disease,
+      medicalHistory,
     } = this.state;
+    const healthInfo = { allergy, disease, medicalHistory };
     await postPatientInfo({
       firstName,
       lastName,
       gender,
       birthday,
-      healthInformation: {},
+      healthInformation: healthInfo,
     });
     await viewPersonalInfo();
     const { routerStore } = this.props;
@@ -248,6 +258,27 @@ export default class RegisterForm extends PureComponent<RegisterFormProps, Regis
   }
 
   @autobind
+  handleAllergyChange(e: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      allergy: e.target.value,
+    });
+  }
+
+  @autobind
+  handleDiseaseChange(e: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      disease: e.target.value,
+    });
+  }
+
+  @autobind
+  handleMedicalHistoryChange(e: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      medicalHistory: e.target.value,
+    });
+  }
+
+  @autobind
   handleContinueEnter() {
     if (this.canContinue) {
       this.handleContinueClick();
@@ -310,6 +341,9 @@ export default class RegisterForm extends PureComponent<RegisterFormProps, Regis
       lastName,
       gender,
       birthday,
+      allergy,
+      disease,
+      medicalHistory,
     } = this.state;
     return (
       <>
@@ -352,6 +386,33 @@ export default class RegisterForm extends PureComponent<RegisterFormProps, Regis
           onEnterKeyUp={this.handleFinishEnter}
           onChange={this.handleBirthdayChange}
           onValidate={this.handleBirthdayValidate}
+        />
+        <Input
+          key="allergy"
+          className={cx('registerForm__input')}
+          label="ALLERGY"
+          type="register"
+          value={allergy}
+          onEnterKeyUp={this.handleFinishEnter}
+          onChange={this.handleAllergyChange}
+        />
+        <Input
+          key="disease"
+          className={cx('registerForm__input')}
+          label="CHRONIC DISEASE"
+          type="register"
+          value={disease}
+          onEnterKeyUp={this.handleFinishEnter}
+          onChange={this.handleDiseaseChange}
+        />
+        <Input
+          key="medicalHistory"
+          className={cx('registerForm__input')}
+          label="OTHER RELATED MEDICAL HISTORY"
+          type="register"
+          value={medicalHistory}
+          onEnterKeyUp={this.handleFinishEnter}
+          onChange={this.handleMedicalHistoryChange}
         />
         <Button
           onClick={this.handleFinishClick}

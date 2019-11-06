@@ -10,7 +10,6 @@ import Table, { Column } from '@/components/Table';
 import { TimeSlotFormat, Indexable } from '@/constants';
 import { viewDoctorTimeslot, postDoctorTimeslot } from '@/service';
 import UserStore from '@/stores/user';
-import FormatDate from '@/utils/time';
 
 const cx = classNames.bind(styles);
 
@@ -20,7 +19,6 @@ interface DoctorProps {
 
 interface TimeSlotState {
   timeslots: (TimeSlotFormat & Indexable)[];
-  selectedTimeSlot: TimeSlotFormat | null;
   isAdding: boolean;
   date: string;
   startTime: string;
@@ -33,7 +31,6 @@ interface TimeSlotState {
 export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> {
   state: TimeSlotState = {
     timeslots: [],
-    selectedTimeSlot: null,
     isAdding: false,
     date: '',
     startTime: '',
@@ -66,17 +63,6 @@ export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> 
         return item.seat;
       },
     },
-    // {
-    //   key: 'cancel',
-    //   title: '',
-    //   width: '20%',
-    //   render: (item: TimeSlotFormat) => {
-    //     // const clickHandler = () => { this.handleCancelTimeSlot(item); };
-    //     // return (
-    //     //   <button onClick={clickHandler} className={cx('timeslot__link')} type="button">Cancel</button>
-    //     // );
-    //   },
-    // },
   ];
 
   componentDidMount() {
@@ -90,10 +76,9 @@ export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> 
     });
     const timeslots = res.data.map((ts, index) => {
       const date = new Date(ts.date);
-      ts.date = `${date.getFullYear().toString()}-${(date.getMonth() + 1).toString()}-${date.getDate().toString()}`;
+      ts.date = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
       const timeslotWithKey = ts as (TimeSlotFormat & Indexable);
       timeslotWithKey.key = String(index);
-
       return timeslotWithKey;
     });
     this.setState({
@@ -118,10 +103,10 @@ export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> 
       date, startTime, endTime, seat,
     } = this.state;
 
-    const end1 = parseInt(endTime.split(':')[0]);
-    const end2 = parseInt(endTime.split(':')[1]);
-    const start1 = parseInt(startTime.split(':')[0]);
-    const start2 = parseInt(startTime.split(':')[1]);
+    const end1 = parseInt(endTime.split(':')[0], 10);
+    const end2 = parseInt(endTime.split(':')[1], 10);
+    const start1 = parseInt(startTime.split(':')[0], 10);
+    const start2 = parseInt(startTime.split(':')[1], 10);
 
     const numTimeSlot = Math.round((end1 - start1) * 2 + (end2 - start2) / 30);
 
@@ -150,20 +135,6 @@ export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> 
   }
 
   @autobind
-  handleSelectTimeSlot(d: TimeSlotFormat) {
-    this.setState({
-      selectedTimeSlot: d,
-    });
-  }
-
-  @autobind
-  handleClearSelection() {
-    this.setState({
-      selectedTimeSlot: null,
-    });
-  }
-
-  @autobind
   handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
       date: e.target.value,
@@ -187,7 +158,7 @@ export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> 
   @autobind
   handleSeatChange(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
-      seat: parseInt(e.target.value),
+      seat: parseInt(e.target.value, 10),
     });
   }
 

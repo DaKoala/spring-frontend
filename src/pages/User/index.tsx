@@ -5,6 +5,7 @@ import classNames from 'classnames/bind';
 import UserMenu from '@/biz-components/UserMenu';
 import ProfilePatient from '@/pages/ProfilePatient';
 import ProfileDoctor from '@/pages/ProfileDoctor';
+import Dashboard from '@/pages/Dashboard';
 import TimeSlot from '@/pages/TimeSlot';
 import Hospital from '@/pages/Hospital';
 import MakeAppointment from '@/pages/MakeAppointment';
@@ -25,7 +26,7 @@ export default class User extends PureComponent<UserProps> {
     const isPatient = userStore!.role === 'PATIENT';
     const isHospital = userStore!.role === 'HOSPITAL';
     const ProfileComponent = isPatient ? ProfilePatient : ProfileDoctor;
-    const DashboardComponent = isHospital ? Hospital : ProfileComponent;
+    const DashboardComponent = isHospital ? Hospital : Dashboard;
     return (
       <>
         <UserMenu />
