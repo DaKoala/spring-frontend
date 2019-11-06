@@ -7,7 +7,7 @@ interface ViewDoctorAppointmentRequest {
 
 type ViewDoctorAppointmentResponse = DoctorAppointment[];
 
-export async function ViewDoctorAppointment(data: ViewDoctorAppointmentRequest) {
+export async function viewDoctorAppointment(data: ViewDoctorAppointmentRequest) {
   const res = await ajax<ViewDoctorAppointmentResponse>({
     auth: true,
     url: '/doctor/appointment',

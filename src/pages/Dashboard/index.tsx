@@ -4,7 +4,8 @@ import autobind from 'autobind-decorator';
 import { inject, observer } from 'mobx-react';
 import styles from './index.less';
 import Table, { Column } from '@/components/Table';
-import { ViewDoctorAppointment, ViewPatientAppointment } from '@/service';
+import { viewDoctorAppointment, viewPatientAppointment } from '@/service';
+import { HealthInformation } from '@/constants';
 import UserStore from '@/stores/user';
 import Button from '@/components/Button';
 
@@ -164,7 +165,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
 
   async fetchDoctorAppointment() {
     const { userStore } = this.props;
-    const res = await ViewDoctorAppointment({
+    const res = await viewDoctorAppointment({
       doctorEmail: userStore!.email,
     });
     const doctorAppointments = res.data.map((item, index) => {
@@ -185,17 +186,17 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
           medicalHistory: '',
         },
       };
-
       appointment.date = `${(date.getMonth() + 1)}-${date.getDate()}`;
-      appointment.startTime = `${date.getHours()}:${date.getMinutes()}`;
+      appointment.startTime = item.timeslot.startTime;
       appointment.id = item.appointmentId;
       appointment.name = item.patient.firstName + item.patient.lastName;
       appointment.gender = item.patient.gender;
       appointment.email = item.patient.email;
       appointment.birthday = `${birthday.getFullYear()}-${(date.getMonth() + 1)}-${date.getDate()}`;
-      appointment.healthInfo.allergy = item.patient.healthInformation.allergy;
-      appointment.healthInfo.disease = item.patient.healthInformation.disease;
-      appointment.healthInfo.medicalHistory = item.patient.healthInformation.medicalHistory;
+      const healthInfo = JSON.parse(item.patient.healthInformation) as HealthInformation;
+      appointment.healthInfo.allergy = healthInfo.allergy;
+      appointment.healthInfo.disease = healthInfo.disease;
+      appointment.healthInfo.medicalHistory = healthInfo.medicalHistory;
       appointment.key = String(index);
       return appointment;
     });
@@ -206,7 +207,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
 
   async fetchPatientAppointment() {
     const { userStore } = this.props;
-    const res = await ViewPatientAppointment({
+    const res = await viewPatientAppointment({
       patientEmail: userStore!.email,
     });
     const patientAppointments = res.data.map((item, index) => {
@@ -224,7 +225,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
       appointment.id = item.appointmentId;
       appointment.doctor = item.doctor.firstName + item.doctor.lastName;
       appointment.department = item.department.departmentName;
-      appointment.startTime = `${date.getHours()}:${date.getMinutes()}`;
+      appointment.startTime = item.timeslot.startTime;
       appointment.hospital = item.hospital.hospitalName;
       appointment.key = String(index);
       return appointment;
