@@ -7,6 +7,7 @@ import ProfilePatient from '@/pages/ProfilePatient';
 import ProfileDoctor from '@/pages/ProfileDoctor';
 import TimeSlot from '@/pages/TimeSlot';
 import Hospital from '@/pages/Hospital';
+import MakeAppointment from '@/pages/MakeAppointment';
 import UserStore from '@/stores/user';
 import styles from './index.less';
 
@@ -32,6 +33,7 @@ export default class User extends PureComponent<UserProps> {
           <Route exact path="/user" component={DashboardComponent} />
           <Route path="/user/profile" component={ProfileComponent} />
           <Route path="/user/timeslot" component={TimeSlot} />
+          <Route path="/user/appointment" component={MakeAppointment} />
         </div>
       </>
     );

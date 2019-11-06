@@ -1,0 +1,35 @@
+@import "../../styles/variables.less";
+@import "../../styles/mixins.less";
+
+.makeAppointment {
+  padding: 54px 50px;
+}
+.makeAppointment__title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title__text {
+  .bigTitleMixin();
+}
+
+.subtitle {
+  .smallTitleMixin();
+  margin-top: 66px;
+  span + span::before {
+    content: '|';
+    margin: 0 5px;
+  }
+}
+.subtitle__btn {
+  cursor: pointer;
+  &:hover {
+    color: @text-green;
+  }
+}
+.dateSelection {
+  margin-top: 34px;
+}
+.dataTable {
+  margin-top: 34px;
+}

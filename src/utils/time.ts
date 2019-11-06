@@ -9,3 +9,16 @@ export default function formatDate(timestamp: number, format: string) {
     .replace('MM', fMonth)
     .replace('DD', fDay);
 }
+
+export function addMinute(time: string, addedMinute: number) {
+  let [hour, minute] = time.split(':').map((value) => parseInt(value, 10));
+  minute += addedMinute;
+  hour += Math.floor(minute / 60);
+  minute %= 60;
+  if (hour >= 24) {
+    hour -= 24;
+  }
+  const hourStr = hour >= 10 ? String(hour) : `0${hour}`;
+  const minuteStr = minute >= 10 ? String(minute) : `0${minute}`;
+  return `${hourStr}:${minuteStr}`;
+}

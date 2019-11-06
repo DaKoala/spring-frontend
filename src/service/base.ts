@@ -1,4 +1,4 @@
-import axios, { AxiosPromise } from 'axios';
+import axios from 'axios';
 import { getToken } from './cookie';
 
 export const BASE_URL = 'https://5a77f725.ngrok.io';

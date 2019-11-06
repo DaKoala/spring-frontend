@@ -1,13 +1,13 @@
-import React, { PureComponent } from "react";
-import classNames from "classnames/bind";
-import styles from "./index.less";
-import Button from "@/components/Button";
-import Modal from "@/components/Modal";
-import Input from "@/components/Input";
-import Table, { Column } from '@/components/Table';
-import { TimeSlotFormat, Indexable } from '@/constants';
+import React, { PureComponent } from 'react';
+import classNames from 'classnames/bind';
 import autobind from 'autobind-decorator';
 import { inject, observer } from 'mobx-react';
+import styles from './index.less';
+import Button from '@/components/Button';
+import Modal from '@/components/Modal';
+import Input from '@/components/Input';
+import Table, { Column } from '@/components/Table';
+import { TimeSlotFormat, Indexable } from '@/constants';
 import { viewDoctorTimeslot, postDoctorTimeslot } from '@/service';
 import UserStore from '@/stores/user';
 import FormatDate from '@/utils/time';
@@ -38,7 +38,7 @@ export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> 
     date: '',
     startTime: '',
     endTime: '',
-    seat: 0
+    seat: 0,
   }
 
   private TimeSlotColumns: Column<TimeSlotFormat & Indexable>[] = [
@@ -89,8 +89,8 @@ export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> 
       doctorEmail: userStore!.email,
     });
     const timeslots = res.data.map((ts, index) => {
-      var date = new Date(ts.date);
-      ts.date = date.getFullYear().toString() + "-" + (date.getMonth()+1).toString() + "-"+date.getDate().toString();
+      const date = new Date(ts.date);
+      ts.date = `${date.getFullYear().toString()}-${(date.getMonth() + 1).toString()}-${date.getDate().toString()}`;
       const timeslotWithKey = ts as (TimeSlotFormat & Indexable);
       timeslotWithKey.key = String(index);
 
@@ -106,28 +106,30 @@ export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> 
     this.setState({
       isAdding: false,
       date: '',
-      startTime:'',
+      startTime: '',
       endTime: '',
-      seat: 0
+      seat: 0,
     });
   }
 
   @autobind
   async handleTimeSlotCreate() {
-    const {date, startTime, endTime, seat} = this.state;
+    const {
+      date, startTime, endTime, seat,
+    } = this.state;
 
-    const end1 = parseInt(endTime.split(":")[0])
-    const end2 = parseInt(endTime.split(":")[1])
-    const start1 = parseInt(startTime.split(":")[0])
-    const start2 = parseInt(startTime.split(":")[1])
+    const end1 = parseInt(endTime.split(':')[0]);
+    const end2 = parseInt(endTime.split(':')[1]);
+    const start1 = parseInt(startTime.split(':')[0]);
+    const start2 = parseInt(startTime.split(':')[1]);
 
-    const numTimeSlot = Math.round((end1 - start1)*2 + (end2 - start2)/30)
+    const numTimeSlot = Math.round((end1 - start1) * 2 + (end2 - start2) / 30);
 
     await postDoctorTimeslot({
       date,
       startTime,
       numTimeSlot,
-      seat
+      seat,
     });
     this.closeModal();
     this.fetchTimeSlots();
@@ -192,46 +194,46 @@ export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> 
   render() {
     const { timeslots, isAdding } = this.state;
     return (
-      <div className={cx("timeslot")}>
-        <div className={cx("timeslot__title")}>Time Slots</div>
-        <div className={cx("timeslot__desc")}>
-          <span className={cx("timeslot__indicator")}>INCOMING TIME SLOTS</span>
+      <div className={cx('timeslot')}>
+        <div className={cx('timeslot__title')}>Time Slots</div>
+        <div className={cx('timeslot__desc')}>
+          <span className={cx('timeslot__indicator')}>INCOMING TIME SLOTS</span>
           <Button onClick={this.handleClickAdd} className={cx('timeslot__addButton')}>Add new</Button>
         </div>
         <Table className={cx('timeslot__table')} dataSource={timeslots} columns={this.TimeSlotColumns} />
         <Modal visible={isAdding} onMaskClick={this.handleClickClose}>
-          <div className = {cx("timeslot__wrap")}>
-            <span className={cx("timeslot__indicator")}>DATE</span>
+          <div className={cx('timeslot__wrap')}>
+            <span className={cx('timeslot__indicator')}>DATE</span>
             <Input
               key="date"
               className={cx('timeslot__input')}
               label="DATE(YYYY-MM-DD)"
               onChange={this.handleDateChange}
             />
-            <span className={cx("timeslot__indicator")}>IN</span>
+            <span className={cx('timeslot__indicator')}>IN</span>
             <Input
               key="startTime"
               className={cx('timeslot__input')}
               label="TIME(HH:MM)"
               onChange={this.handleStartChange}
             />
-            <span className={cx("timeslot__indicator")}>OUT</span>
+            <span className={cx('timeslot__indicator')}>OUT</span>
             <Input
               key="endTime"
               className={cx('timeslot__input')}
               label="TIME(HH:MM)"
               onChange={this.handleEndChange}
             />
-            <span className={cx("timeslot__indicator")}>SEATS</span>
+            <span className={cx('timeslot__indicator')}>SEATS</span>
             <Input
               key="seat"
               className={cx('timeslot__input')}
               label="NUM(00)"
               onChange={this.handleSeatChange}
             />
-            <div className={cx("timeslot__buttons")}>
-              <Button type = "secondary" className={cx("timeslot__cancel")} onClick={this.handleClickClose}>Cancel</Button>
-              <Button onClick={this.handleTimeSlotCreate} className={cx("timeslot__create")}>Create</Button>
+            <div className={cx('timeslot__buttons')}>
+              <Button type="secondary" className={cx('timeslot__cancel')} onClick={this.handleClickClose}>Cancel</Button>
+              <Button onClick={this.handleTimeSlotCreate} className={cx('timeslot__create')}>Create</Button>
             </div>
           </div>
         </Modal>

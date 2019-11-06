@@ -7,9 +7,11 @@ export interface Department {
 }
 
 export interface TimeSlotFormat{
+  doctorEmail: string;
   date: string;
   startTime: string;
   seat: number;
+  timeSlotId: number;
 }
 
 export interface Doctor {
