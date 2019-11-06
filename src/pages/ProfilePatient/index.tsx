@@ -29,7 +29,7 @@ export default class Profile extends PureComponent<ProfileProps> {
 
   render() {
     const { userStore } = this.props;
-    const { fullName } = userStore;
+    const { fullName, healthInformation } = userStore;
     return (
       <div className={cx('profile')}>
         <div className={cx('profile__name')}>{fullName}</div>
@@ -37,9 +37,9 @@ export default class Profile extends PureComponent<ProfileProps> {
           <span>{this.displayGender}</span>
           <span>{this.displayBirthday}</span>
         </div>
-        <InfoItem label="ALLERGIES" />
-        <InfoItem label="CHORONIC DISEASES" />
-        <InfoItem label="MEDICAL HISTORY" />
+        <InfoItem label="ALLERGIES" content={healthInformation.allergy} />
+        <InfoItem label="CHRONIC DISEASES" content={healthInformation.disease} />
+        <InfoItem label="MEDICAL HISTORY" content={healthInformation.medicalHistory} />
       </div>
     );
   }

@@ -10,6 +10,7 @@ import Table, { Column } from '@/components/Table';
 import { TimeSlotFormat, Indexable } from '@/constants';
 import { viewDoctorTimeslot, postDoctorTimeslot } from '@/service';
 import UserStore from '@/stores/user';
+import formatDate from '@/utils/time';
 
 const cx = classNames.bind(styles);
 
@@ -44,7 +45,7 @@ export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> 
       title: 'DATE',
       width: '20%',
       render(item: TimeSlotFormat) {
-        return item.date;
+        return formatDate(item.date, 'YYYY-MM-DD');
       },
     },
     {
@@ -75,8 +76,6 @@ export default class TimeSlot extends PureComponent<DoctorProps, TimeSlotState> 
       doctorEmail: userStore!.email,
     });
     const timeslots = res.data.map((ts, index) => {
-      const date = new Date(ts.date);
-      ts.date = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
       const timeslotWithKey = ts as (TimeSlotFormat & Indexable);
       timeslotWithKey.key = String(index);
       return timeslotWithKey;

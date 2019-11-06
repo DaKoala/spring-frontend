@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx';
-import { Role } from '@/constants';
+import { Role, HealthInformation } from '@/constants';
 
 export default class UserStore {
   @observable email = '';
@@ -21,6 +21,8 @@ export default class UserStore {
   @observable hospitalName = '';
 
   @observable birthday = 0;
+
+  @observable healthInformation: HealthInformation = {} as HealthInformation;
 
   @observable role: Role = 'DOCTOR';
 
@@ -80,6 +82,11 @@ export default class UserStore {
   @action
   setBirthday(birthday: number) {
     this.birthday = birthday;
+  }
+
+  @action
+  setHealthInformation(healthInformation: HealthInformation) {
+    this.healthInformation = healthInformation;
   }
 
   @action

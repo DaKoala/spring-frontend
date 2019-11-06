@@ -1,4 +1,5 @@
 import ajax from '../base';
+import { HealthInformation } from '@/constants';
 import { userStoreInstance } from '@/stores/user';
 
 interface PatientInfo {
@@ -6,7 +7,7 @@ interface PatientInfo {
   firstName: string;
   lastName: string;
   gender: string;
-  healthInformation: Record<string, any>;
+  healthInformation: string;
   patientEmail: string;
 }
 
@@ -50,6 +51,7 @@ export async function viewPersonalInfo() {
     userStoreInstance.setLastName(data.lastName);
     userStoreInstance.setGender(data.gender);
     userStoreInstance.setBirthday(data.birthday);
+    userStoreInstance.setHealthInformation(JSON.parse(data.healthInformation));
   } else if (isDoctor(data)) {
     userStoreInstance.setRole('DOCTOR');
     userStoreInstance.setBirthday(data.birthday);
