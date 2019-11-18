@@ -5,9 +5,10 @@ import { inject, observer } from 'mobx-react';
 import styles from './index.less';
 import Table, { Column } from '@/components/Table';
 import { viewDoctorAppointment, viewPatientAppointment } from '@/service';
-import { HealthInformation } from '@/constants';
+import { HealthInformation, MyDoctorAppointment, MyPatientAppointment } from '@/constants';
 import UserStore from '@/stores/user';
 import Button from '@/components/Button';
+import PatientRecord from '@/biz-components/PatientRecord';
 
 const cx = classNames.bind(styles);
 
@@ -19,32 +20,7 @@ interface DashboardState {
   doctorAppointments: MyDoctorAppointment[];
   patientAppointments: MyPatientAppointment[];
   selectedPatient: MyDoctorAppointment | null;
-}
-
-interface MyDoctorAppointment {
-  key: string;
-  id: number;
-  name: string;
-  gender: string;
-  email: string;
-  healthInfo: {
-    allergy: string;
-    disease: string;
-    medicalHistory: string;
-  };
-  birthday: string;
-  date: string;
-  startTime: string;
-}
-
-interface MyPatientAppointment {
-  key: string;
-  id: number;
-  hospital: string;
-  department: string;
-  doctor: string;
-  date: string;
-  startTime: string;
+  selectedRecord: MyPatientAppointment;
 }
 
 @inject('userStore')
@@ -54,6 +30,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     doctorAppointments: [],
     patientAppointments: [],
     selectedPatient: null,
+    selectedRecord: null,
   }
 
   private DoctorColumns: Column<MyDoctorAppointment>[] = [
@@ -149,6 +126,15 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
       width: '10%',
       render(item: MyPatientAppointment) {
         return item.startTime;
+      },
+    },
+    {
+      key: 'operation',
+      title: '',
+      width: '10%',
+      render: (item) => {
+        const clickHandler = () => this.handleViewRecord(item);
+        return <button type="button" onClick={clickHandler}>View</button>;
       },
     },
   ];
@@ -249,6 +235,20 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     });
   }
 
+  @autobind
+  handleViewRecord(record: MyPatientAppointment) {
+    this.setState({
+      selectedRecord: record,
+    });
+  }
+
+  @autobind
+  handleResetRecord() {
+    this.setState({
+      selectedRecord: null,
+    });
+  }
+
   renderPatient() {
     const { selectedPatient } = this.state;
     return (
@@ -287,9 +287,25 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     );
   }
 
+  renderPatientRecord() {
+    const { selectedRecord } = this.state;
+    return <PatientRecord appointment={selectedRecord} onClickBack={this.handleResetRecord} />;
+  }
+
   render() {
-    const { selectedPatient } = this.state;
-    const pageContent = selectedPatient ? this.renderPatient() : this.renderAppointment();
-    return pageContent;
+    const { selectedPatient, selectedRecord } = this.state;
+    let content: React.ReactNode;
+    if (selectedRecord) {
+      content = this.renderPatientRecord();
+    } else if (selectedPatient) {
+      content = this.renderPatient();
+    } else {
+      content = this.renderAppointment();
+    }
+    return (
+      <div className={cx('appointment')}>
+        {content}
+      </div>
+    );
   }
 }

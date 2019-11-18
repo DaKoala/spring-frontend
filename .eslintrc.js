@@ -43,6 +43,7 @@ module.exports = {
     'react/jsx-filename-extension': 'off',
     'react/static-property-placement': 'off',
     'react/state-in-constructor': 'off',
+    'react/prop-types': 'off',
     'jsx-a11y/no-autofocus': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',

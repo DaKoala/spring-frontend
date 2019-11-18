@@ -24,7 +24,7 @@ export default class UserStore {
 
   @observable healthInformation: HealthInformation = {} as HealthInformation;
 
-  @observable role: Role = 'DOCTOR';
+  @observable role: Role = 'PATIENT';
 
   @computed
   get fullName(): string {

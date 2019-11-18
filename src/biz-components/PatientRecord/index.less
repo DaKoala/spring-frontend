@@ -1,0 +1,32 @@
+@import "../../styles/mixins.less";
+@import "../../styles/variables.less";
+
+.record__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 58px;
+}
+.record__title {
+  .bigTitleMixin();
+}
+.record__line {
+  margin-top: 30px;
+  display: flex;
+}
+.record__cell {
+  width: 256px;
+  height: 57px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cell__title {
+  .smallTitleMixin();
+}
+.cell__content {
+  font-size: 18px;
+  line-height: 22px;
+  color: @text-grey;
+}
