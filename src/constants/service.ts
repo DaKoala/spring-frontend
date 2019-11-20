@@ -36,6 +36,7 @@ export interface DoctorAppointment{
 
 export interface PatientAppointment{
   appointmentId: number;
+  caseDescription: Record<string, string>;
   department: {
     departmentName: string;
   };
