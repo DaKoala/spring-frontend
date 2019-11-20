@@ -4,10 +4,11 @@ import autobind from 'autobind-decorator';
 import { inject, observer } from 'mobx-react';
 import styles from './index.less';
 import Table, { Column } from '@/components/Table';
-import { viewDoctorAppointment, viewPatientAppointment } from '@/service';
-import { HealthInformation, MyDoctorAppointment, MyPatientAppointment } from '@/constants';
+import { viewDoctorAppointment, viewPatientAppointment, addPatientCaseReport } from '@/service';
+import { HealthInformation, MyDoctorAppointment, MyPatientAppointment, SelectedPatientAppointment } from '@/constants';
 import UserStore from '@/stores/user';
 import Button from '@/components/Button';
+import Input from '@/components/Input';
 import PatientRecord from '@/biz-components/PatientRecord';
 
 const cx = classNames.bind(styles);
@@ -21,6 +22,11 @@ interface DashboardState {
   patientAppointments: MyPatientAppointment[];
   selectedPatient: MyDoctorAppointment | null;
   selectedRecord: MyPatientAppointment;
+  selectedPatientCase: MyDoctorAppointment | null;
+  symptoms: string;
+  diagnoses: string;
+  prescription: string;
+  selectedPatientAppointments: SelectedPatientAppointment[];
 }
 
 @inject('userStore')
@@ -31,6 +37,11 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     patientAppointments: [],
     selectedPatient: null,
     selectedRecord: null,
+    selectedPatientCase: null,
+    symptoms: '',
+    diagnoses: '',
+    prescription: '',
+    selectedPatientAppointments: [],
   }
 
   private DoctorColumns: Column<MyDoctorAppointment>[] = [
@@ -75,6 +86,17 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
       width: '15%',
       render(item: MyDoctorAppointment) {
         return item.startTime;
+      },
+    },
+    {
+      key: 'add',
+      title: '',
+      width: '15%',
+      render: (item: MyDoctorAppointment) => {
+        const clickHandler = () => { this.handleAddCaseReport(item); };
+        return (
+          <button onClick={clickHandler} className={cx('patientInfo__link')} type="button">Add Case Report</button>
+        );
       },
     },
   ];
@@ -192,10 +214,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
   }
 
   async fetchPatientAppointment() {
-    const { userStore } = this.props;
-    const res = await viewPatientAppointment({
-      patientEmail: userStore!.email,
-    });
+    const res = await viewPatientAppointment();
     const patientAppointments = res.data.map((item, index) => {
       const date = new Date(item.timeslot.date);
       const appointment: MyPatientAppointment = {
@@ -221,11 +240,42 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     });
   }
 
+//   async fetchSelectedPatientAppointments() {
+//     const { selectedPatient } = this.state;
+//     const res = await viewPatientAppointment({
+//       patientEmail: selectedPatient.email,
+//     });
+//     const selectedPatientAppointments = res.data.map((item, index) => {
+//       const date = new Date(item.timeslot.date);
+//       const appointment: SelectedPatientAppointment = {
+//         key: '',
+//         id: 0,
+//         department: '',
+//         date: '',
+//         caseDescription: {
+//           symptoms: '',
+//           diagnoses: '',
+//           prescription: '',
+//         },
+//       };
+//       appointment.date = `${(date.getMonth() + 1)}-${date.getDate()}`;
+//       appointment.id = item.appointmentId;
+//       appointment.department = item.department.departmentName;
+//       appointment.caseDescription = item.caseDescription;
+//       appointment.key = String(index);
+//       return appointment;
+//     });
+//     this.setState({
+//       selectedPatientAppointments,
+//     });
+//   }
+
   @autobind
   handleSelectPatient(d: MyDoctorAppointment) {
     this.setState({
       selectedPatient: d,
     });
+    //this.fetchSelectedPatientAppointments();
   }
 
   @autobind
@@ -243,10 +293,119 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
   }
 
   @autobind
+  handleClearPatientCase() {
+    this.setState({
+      selectedPatientCase: null,
+      diagnoses: '',
+      symptoms: '',
+      prescription: '',
+    });
+  }
+
+  @autobind
   handleResetRecord() {
     this.setState({
       selectedRecord: null,
     });
+  }
+
+  @autobind
+  handleAddCaseReport(d: MyDoctorAppointment) {
+    this.setState({
+      selectedPatientCase: d,
+    });
+  }
+
+  @autobind
+  handleSymptomsChange(e: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      symptoms: e.target.value,
+    });
+  }
+
+  @autobind
+  handleDiagnosesChange(e: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      diagnoses: e.target.value,
+    });
+  }
+
+  @autobind
+  handlePrescriptionChange(e: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      prescription: e.target.value,
+    });
+  }
+
+  @autobind
+  async handleCompleteCaseReport() {
+    const {
+      selectedPatientCase, symptoms, diagnoses, prescription,
+    } = this.state;
+    const description = { symptoms, diagnoses, prescription };
+
+    await addPatientCaseReport({
+      appointmentId: selectedPatientCase.id,
+      caseDescription: description,
+    });
+
+    this.setState({
+      selectedPatientCase: null,
+      diagnoses: '',
+      symptoms: '',
+      prescription: '',
+    });
+  }
+
+  renderAddCaseReport() {
+    const { selectedPatientCase } = this.state;
+    const { userStore } = this.props;
+    const date = new Date(selectedPatientCase.date);
+    return (
+      <div className={cx('appointment')}>
+        <div className={cx('appointment__buttonContainer')}>
+          <Button type="secondary" onClick={this.handleClearPatientCase}>Back</Button>
+          <Button type="secondary" onClick={this.handleCompleteCaseReport}>Complete</Button>
+        </div>
+        <div className={cx('appointment__name')}>{`New Case Report for ${selectedPatientCase.name}.`}</div>
+        <div className={cx('appointment__largerContainer')}>
+          <div className={cx('appointment__container')}>
+            <div className={cx('appointment__indicator')}>APPOINTMENT ID</div>
+            <div className={cx('appointment__normal')}>{selectedPatientCase.id}</div>
+          </div>
+          <div className={cx('appointment__container')}>
+            <div className={cx('appointment__indicator')}>DEPARTMENT</div>
+            <div className={cx('appointment__normal')}>{userStore!.departmentName}</div>
+          </div>
+          <div className={cx('appointment__container')}>
+            <div className={cx('appointment__indicator')}>DATE</div>
+            <div className={cx('appointment__normal')}>{`${(date.getMonth() + 1)}-${date.getDate()}`}</div>
+          </div>
+        </div>
+        <div className={cx('appointment__indicator')}>CASE DESCRIPTION</div>
+        <div className={cx('appointment__indicator')}>SYMPTOMS</div>
+        <Input
+          key="date"
+          className={cx('appointment__input')}
+          label="DATE(YYYY-MM-DD)"
+          onChange={this.handleSymptomsChange}
+        />
+        <div className={cx('appointment__indicator')}>DIAGNOSES</div>
+        <Input
+          key="date"
+          className={cx('appointment__input')}
+          label="DATE(YYYY-MM-DD)"
+          onChange={this.handleDiagnosesChange}
+        />
+        <div className={cx('appointment__indicator')}>PRESCRIPTION</div>
+        <Input
+          key="date"
+          className={cx('appointment__input')}
+          label="DATE(YYYY-MM-DD)"
+          onChange={this.handlePrescriptionChange}
+        />
+      </div>
+    );
   }
 
   renderPatient() {
@@ -267,6 +426,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
         <div className={cx('appointment__content')}>{selectedPatient.healthInfo.disease}</div>
         <div className={cx('appointment__indicator')}>MEDICAL HISTORY</div>
         <div className={cx('appointment__content')}>{selectedPatient.healthInfo.medicalHistory}</div>
+        <div className={cx('appointment__indicator')}>MEDICAL RECORDS</div>
       </div>
     );
   }
@@ -293,12 +453,14 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
   }
 
   render() {
-    const { selectedPatient, selectedRecord } = this.state;
+    const { selectedPatient, selectedRecord, selectedPatientCase } = this.state;
     let content: React.ReactNode;
     if (selectedRecord) {
       content = this.renderPatientRecord();
     } else if (selectedPatient) {
       content = this.renderPatient();
+    } else if (selectedPatientCase) {
+      content = this.renderAddCaseReport();
     } else {
       content = this.renderAppointment();
     }

@@ -2,7 +2,7 @@ import ajax from '../base';
 
 interface AddPatientCaseReportRequest {
   appointmentId: number;
-  caseDescription: string;
+  caseDescription: Record<string, any>;
 }
 
 export async function addPatientCaseReport(data: AddPatientCaseReportRequest) {

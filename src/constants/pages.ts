@@ -23,3 +23,15 @@ export interface MyPatientAppointment {
   date: string;
   startTime: string;
 }
+
+export interface SelectedPatientAppointment {
+  key: string;
+  id: number;
+  department: string;
+  date: string;
+  caseDescription: {
+  symptoms: string;
+  diagnoses: string;
+    prescription: string;
+  };
+}
