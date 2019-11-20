@@ -13,3 +13,5 @@ export * from './apis/post-doctor-timeslot';
 export * from './apis/post-patient-appointment';
 export * from './apis/view-doctor-appointment';
 export * from './apis/view-patient-appointment';
+export * from './apis/add-patient-case-report';
+export * from './apis/cancel-appointment-by-patient';
