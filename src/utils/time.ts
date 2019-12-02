@@ -1,4 +1,4 @@
-export default function formatDate(timestamp: number, format: string) {
+export default function formatDate(timestamp: number, format: string): string {
   const date = new Date(timestamp);
   const day = date.getDate();
   const month = date.getMonth() + 1;
@@ -10,7 +10,7 @@ export default function formatDate(timestamp: number, format: string) {
     .replace('DD', fDay);
 }
 
-export function addMinute(time: string, addedMinute: number) {
+export function addMinute(time: string, addedMinute: number): string {
   let [hour, minute] = time.split(':').map((value) => parseInt(value, 10));
   minute += addedMinute;
   hour += Math.floor(minute / 60);
@@ -21,4 +21,30 @@ export function addMinute(time: string, addedMinute: number) {
   const hourStr = hour >= 10 ? String(hour) : `0${hour}`;
   const minuteStr = minute >= 10 ? String(minute) : `0${minute}`;
   return `${hourStr}:${minuteStr}`;
+}
+
+export function isFutureDay(date: Date): boolean {
+  const now = new Date();
+  const year = date.getFullYear();
+  const currYear = now.getFullYear();
+  if (year < currYear) {
+    return false;
+  }
+  if (year > currYear) {
+    return true;
+  }
+  const month = date.getMonth();
+  const currMonth = now.getMonth();
+  if (month < currMonth) {
+    return false;
+  }
+  if (month > currMonth) {
+    return true;
+  }
+  const day = date.getDay();
+  const currDay = now.getDay();
+  if (day > currDay) {
+    return true;
+  }
+  return false;
 }

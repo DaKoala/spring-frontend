@@ -22,6 +22,7 @@ export interface MyPatientAppointment {
   doctor: string;
   date: string;
   startTime: string;
+  isIncoming: boolean;
 }
 
 export interface SelectedPatientAppointment {

@@ -4,12 +4,23 @@ import autobind from 'autobind-decorator';
 import { inject, observer } from 'mobx-react';
 import styles from './index.less';
 import Table, { Column } from '@/components/Table';
-import { viewDoctorAppointment, viewPatientAppointment, addPatientCaseReport } from '@/service';
-import { HealthInformation, MyDoctorAppointment, MyPatientAppointment, SelectedPatientAppointment } from '@/constants';
+import {
+  viewDoctorAppointment,
+  viewPatientAppointment,
+  addPatientCaseReport,
+  cancelAppointmentByPatient,
+} from '@/service';
+import {
+  HealthInformation,
+  MyDoctorAppointment,
+  MyPatientAppointment,
+  SelectedPatientAppointment,
+} from '@/constants';
 import UserStore from '@/stores/user';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import PatientRecord from '@/biz-components/PatientRecord';
+import { isFutureDay } from '@/utils/time';
 
 const cx = classNames.bind(styles);
 
@@ -20,6 +31,7 @@ interface DoctorProps {
 interface DashboardState {
   doctorAppointments: MyDoctorAppointment[];
   patientAppointments: MyPatientAppointment[];
+  patientPastAppointments: MyPatientAppointment[];
   selectedPatient: MyDoctorAppointment | null;
   selectedRecord: MyPatientAppointment;
   selectedPatientCase: MyDoctorAppointment | null;
@@ -35,6 +47,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
   state: DashboardState = {
     doctorAppointments: [],
     patientAppointments: [],
+    patientPastAppointments: [],
     selectedPatient: null,
     selectedRecord: null,
     selectedPatientCase: null,
@@ -101,7 +114,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     },
   ];
 
-  private PatientColumns: Column<MyPatientAppointment>[] = [
+  private patientColumns: Column<MyPatientAppointment>[] = [
     {
       key: 'id',
       title: 'ID',
@@ -155,8 +168,11 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
       title: '',
       width: '10%',
       render: (item) => {
-        const clickHandler = () => this.handleViewRecord(item);
-        return <button type="button" onClick={clickHandler}>View</button>;
+        const { isIncoming } = item;
+        const clickHandler = isIncoming
+          ? () => this.handleCancelAppointment(item) : () => this.handleViewRecord(item);
+        const text = isIncoming ? 'Cancel' : 'View';
+        return <button type="button" onClick={clickHandler}>{text}</button>;
       },
     },
   ];
@@ -215,28 +231,32 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
 
   async fetchPatientAppointment() {
     const res = await viewPatientAppointment();
-    const patientAppointments = res.data.map((item, index) => {
+    const patientAppointments = res.data.map((item) => {
       const date = new Date(item.timeslot.date);
       const appointment: MyPatientAppointment = {
-        key: '',
-        id: 0,
-        hospital: '',
-        department: '',
-        doctor: '',
-        date: '',
-        startTime: '',
+        key: String(item.appointmentId),
+        id: item.appointmentId,
+        hospital: item.hospital.hospitalName,
+        department: item.department.departmentName,
+        doctor: `${item.doctor.firstName} ${item.doctor.lastName}`,
+        date: `${(date.getMonth() + 1)}-${date.getDate()}`,
+        startTime: item.timeslot.startTime,
+        isIncoming: isFutureDay(date),
       };
-      appointment.date = `${(date.getMonth() + 1)}-${date.getDate()}`;
-      appointment.id = item.appointmentId;
-      appointment.doctor = item.doctor.firstName + item.doctor.lastName;
-      appointment.department = item.department.departmentName;
-      appointment.startTime = item.timeslot.startTime;
-      appointment.hospital = item.hospital.hospitalName;
-      appointment.key = String(index);
       return appointment;
     });
+    const incomingAppointments: MyPatientAppointment[] = [];
+    const pastAppointments: MyPatientAppointment[] = [];
+    for (const appointment of patientAppointments) {
+      if (appointment.isIncoming) {
+        incomingAppointments.push(appointment);
+      } else {
+        pastAppointments.push(appointment);
+      }
+    }
     this.setState({
-      patientAppointments,
+      patientAppointments: incomingAppointments,
+      patientPastAppointments: pastAppointments,
     });
   }
 
@@ -290,6 +310,11 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     this.setState({
       selectedRecord: record,
     });
+  }
+
+  @autobind
+  handleCancelAppointment(appointment: MyPatientAppointment) {
+    const confirmed = window.confirm('Are you sure to cancel the appointment?');
   }
 
   @autobind
@@ -435,7 +460,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     const { patientAppointments, doctorAppointments } = this.state;
     const { userStore } = this.props;
     const isPatient = userStore!.role === 'PATIENT';
-    const table = isPatient ? <Table className={cx('appointment__table')} columns={this.PatientColumns} dataSource={patientAppointments} /> : <Table className={cx('appointment__table')} columns={this.DoctorColumns} dataSource={doctorAppointments} />;
+    const table = isPatient ? <Table className={cx('appointment__table')} columns={this.patientColumns} dataSource={patientAppointments} /> : <Table className={cx('appointment__table')} columns={this.DoctorColumns} dataSource={doctorAppointments} />;
     return (
       <div className={cx('appointment')}>
         <div className={cx('appointment__title')}>{`Good morning ${userStore.firstName}.`}</div>
@@ -443,7 +468,25 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
           <span className={cx('appointment__indicator')}>INCOMING APPOINTMENTS</span>
         </div>
         {table}
+        {this.renderPastAppointment()}
       </div>
+    );
+  }
+
+  renderPastAppointment() {
+    const { patientPastAppointments } = this.state;
+    if (patientPastAppointments.length === 0) {
+      return null;
+    }
+    return (
+      <>
+        <div className={cx('appointment__desc')}>
+          <span className={cx('appointment__indicator')}>
+            PAST APPOINTMENTS
+          </span>
+          <Table className={cx('appointment__table')} columns={this.patientColumns} dataSource={patientPastAppointments} />
+        </div>
+      </>
     );
   }
 
