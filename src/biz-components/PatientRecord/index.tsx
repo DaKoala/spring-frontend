@@ -28,7 +28,13 @@ const PatientRecord: React.FC<PatientRecordProps> = ({ appointment, onClickBack 
     doctor,
     date,
     id,
+    caseDescription,
   } = appointment;
+
+  const descriptions = Object.entries(caseDescription).map(
+    ([key, value]) => <InfoItem key={key} label={key} content={value} />,
+  );
+
   return (
     <div>
       <div className={cx('record__header')}>
@@ -44,7 +50,7 @@ const PatientRecord: React.FC<PatientRecordProps> = ({ appointment, onClickBack 
         {renderCell('DATE', date)}
         {renderCell('APPOINTMENT ID', id)}
       </div>
-      <InfoItem label="CASE DESCRIPTION" />
+      {descriptions}
     </div>
   );
 };

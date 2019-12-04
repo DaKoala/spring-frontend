@@ -235,6 +235,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
       const date = new Date(item.timeslot.date);
       const appointment: MyPatientAppointment = {
         key: String(item.appointmentId),
+        caseDescription: item.caseDescription,
         id: item.appointmentId,
         hospital: item.hospital.hospitalName,
         department: item.department.departmentName,

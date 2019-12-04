@@ -16,6 +16,7 @@ export interface MyDoctorAppointment {
 
 export interface MyPatientAppointment {
   key: string;
+  caseDescription: Record<string, string>;
   id: number;
   hospital: string;
   department: string;
