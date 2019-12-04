@@ -241,6 +241,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
         doctor: `${item.doctor.firstName} ${item.doctor.lastName}`,
         date: `${(date.getMonth() + 1)}-${date.getDate()}`,
         startTime: item.timeslot.startTime,
+        timeSlotId: item.timeslot.timeSlotId,
         isIncoming: isFutureDay(date),
       };
       return appointment;
@@ -313,8 +314,15 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
   }
 
   @autobind
-  handleCancelAppointment(appointment: MyPatientAppointment) {
+  async handleCancelAppointment(appointment: MyPatientAppointment) {
     const confirmed = window.confirm('Are you sure to cancel the appointment?');
+    if (confirmed) {
+      await cancelAppointmentByPatient({
+        timeSlotId: appointment.timeSlotId,
+        appointmentId: appointment.id,
+      });
+      await this.fetchPatientAppointment();
+    }
   }
 
   @autobind

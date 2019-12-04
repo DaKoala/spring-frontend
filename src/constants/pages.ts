@@ -21,6 +21,7 @@ export interface MyPatientAppointment {
   department: string;
   doctor: string;
   date: string;
+  timeSlotId: number;
   startTime: string;
   isIncoming: boolean;
 }

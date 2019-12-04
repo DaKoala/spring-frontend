@@ -5,6 +5,7 @@ export type HealthInformation = Record<'allergy' | 'disease' | 'medicalHistory',
 interface AppointmentTimeSlot {
   date: string;
   startTime: string;
+  timeSlotId: number;
 }
 
 export interface Department {
