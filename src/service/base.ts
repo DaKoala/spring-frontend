@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig, AxiosPromise } from 'axios';
 import { getToken } from './cookie';
 
-export const BASE_URL = 'https://3b97ee75.ngrok.io';
+export const BASE_URL = 'https://39026895.ngrok.io';
 
 function transformData(data?: Record<string, any>) {
   if (!data) {
@@ -25,14 +25,7 @@ interface RequestOptions {
   method?: 'GET' | 'POST';
 }
 
-interface BaseResponse<T = unknown> {
-  code: number;
-  message: string;
-  success: boolean;
-  data: T;
-}
-
-export default async function ajax<T = null>(options: RequestOptions) {
+function generateAxiosConfig(options: RequestOptions): AxiosRequestConfig {
   const {
     url,
     method,
@@ -50,18 +43,22 @@ export default async function ajax<T = null>(options: RequestOptions) {
   }
   const params = isGet ? data : undefined;
   const bodyData = isGet ? undefined : data;
+  return {
+    url: `${BASE_URL}${url}`,
+    transformRequest: [
+      transformData,
+    ],
+    method,
+    headers,
+    params,
+    data: bodyData,
+  };
+}
+
+async function handleError<T>(axiosPromise: AxiosPromise): Promise<BaseResponse<T>> {
   let response;
   try {
-    response = await axios({
-      url: `${BASE_URL}${url}`,
-      transformRequest: [
-        transformData,
-      ],
-      method,
-      headers,
-      params,
-      data: bodyData,
-    });
+    response = await axiosPromise;
   } catch (e) {
     alert(e.message);
     throw e;
@@ -79,5 +76,19 @@ export default async function ajax<T = null>(options: RequestOptions) {
   if (typeof resData.data === 'string') {
     resData.data = JSON.parse(resData.data);
   }
-  return resData as BaseResponse<T>;
+  return resData;
+}
+
+interface BaseResponse<T = unknown> {
+  code: number;
+  message: string;
+  success: boolean;
+  data: T;
+}
+
+export default async function ajax<T = null>(options: RequestOptions): Promise<BaseResponse<T>> {
+  const axiosConfig = generateAxiosConfig(options);
+  const axiosPromise = axios(axiosConfig);
+  const resData = await handleError<T>(axiosPromise);
+  return resData;
 }
