@@ -16,7 +16,11 @@ export interface MyDoctorAppointment {
 
 export interface MyPatientAppointment {
   key: string;
-  caseDescription: Record<string, string>;
+  caseDescription: {
+    symptoms: string;
+    diagnoses: string;
+    prescription: string;
+  };
   id: number;
   hospital: string;
   department: string;
@@ -25,16 +29,4 @@ export interface MyPatientAppointment {
   timeSlotId: number;
   startTime: string;
   isIncoming: boolean;
-}
-
-export interface SelectedPatientAppointment {
-  key: string;
-  id: number;
-  department: string;
-  date: string;
-  caseDescription: {
-  symptoms: string;
-  diagnoses: string;
-    prescription: string;
-  };
 }

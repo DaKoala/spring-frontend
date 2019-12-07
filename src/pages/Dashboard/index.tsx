@@ -5,20 +5,22 @@ import { inject, observer } from 'mobx-react';
 import styles from './index.less';
 import Table, { Column } from '@/components/Table';
 import {
+  viewPatientDailyAnalysis,
   viewDoctorAppointment,
   viewPatientAppointment,
+  viewPatientAppointmentDoctor,
   addPatientCaseReport,
   cancelAppointmentByPatient,
 } from '@/service';
 import {
   HealthInformation,
+  CaseDesc,
   MyDoctorAppointment,
   MyPatientAppointment,
-  SelectedPatientAppointment,
 } from '@/constants';
+
 import UserStore from '@/stores/user';
 import Button from '@/components/Button';
-import Input from '@/components/Input';
 import PatientRecord from '@/biz-components/PatientRecord';
 import { isFutureDay } from '@/utils/time';
 import toast from '@/utils/toast';
@@ -39,7 +41,8 @@ interface DashboardState {
   symptoms: string;
   diagnoses: string;
   prescription: string;
-  selectedPatientAppointments: SelectedPatientAppointment[];
+  selectedPatientAppointments: MyPatientAppointment[];
+  message: string;
 }
 
 @inject('userStore')
@@ -56,7 +59,56 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     diagnoses: '',
     prescription: '',
     selectedPatientAppointments: [],
+    message: '',
   }
+
+  private selectedPatientColumns: Column<MyPatientAppointment>[] = [
+    {
+      key: 'id',
+      title: 'APPOINTMENT ID',
+      width: '20%',
+      render(item: MyPatientAppointment) {
+        return item.id;
+      },
+    },
+    {
+      key: 'date',
+      title: 'DATE',
+      width: '10%',
+      render(item: MyPatientAppointment) {
+        return item.date;
+      },
+    },
+    {
+      key: 'department',
+      title: 'DEPARTMENT',
+      width: '15%',
+      render(item: MyPatientAppointment) {
+        return item.department;
+      },
+    },
+    {
+      key: 'caseDescription',
+      title: 'CASE DESCRIPTION',
+      width: '55%',
+      render: (item: MyPatientAppointment) => (
+        <div className={cx('appointment__description')}>
+          <div className={cx('appointment__oneDescription')}>
+            <div className={cx('appointment__prompt')}>Symptoms:</div>
+            <div className={cx('appointment__text')}>{item.caseDescription.symptoms}</div>
+          </div>
+          <div className={cx('appointment__oneDescription')}>
+            <div className={cx('appointment__prompt')}>Diagnoses:</div>
+            <div className={cx('appointment__text')}>{item.caseDescription.diagnoses}</div>
+          </div>
+          <div className={cx('appointment__oneDescription')}>
+            <div className={cx('appointment__prompt')}>Prescription:</div>
+            <div className={cx('appointment__text')}>{item.caseDescription.prescription}</div>
+          </div>
+        </div>
+      ),
+    },
+  ];
 
   private DoctorColumns: Column<MyDoctorAppointment>[] = [
     {
@@ -188,11 +240,16 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     }
   }
 
-  async fetchDoctorAppointment() {
-    const { userStore } = this.props;
-    const res = await viewDoctorAppointment({
-      doctorEmail: userStore!.email,
+  async fetchMessage() {
+    const res = await viewPatientDailyAnalysis();
+    const message = res.data;
+    this.setState({
+      message,
     });
+  }
+
+  async fetchDoctorAppointment() {
+    const res = await viewDoctorAppointment();
     const doctorAppointments = res.data.map((item, index) => {
       const date = new Date(item.timeslot.date);
       const birthday = new Date(item.patient.birthday);
@@ -214,9 +271,9 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
       appointment.date = `${(date.getMonth() + 1)}-${date.getDate()}`;
       appointment.startTime = item.timeslot.startTime;
       appointment.id = item.appointmentId;
-      appointment.name = item.patient.firstName + item.patient.lastName;
+      appointment.name = `${item.patient.firstName} ${item.patient.lastName}`;
       appointment.gender = item.patient.gender;
-      appointment.email = item.patient.email;
+      appointment.email = item.patient.patientEmail;
       appointment.birthday = `${birthday.getFullYear()}-${(date.getMonth() + 1)}-${date.getDate()}`;
       const healthInfo = JSON.parse(item.patient.healthInformation) as HealthInformation;
       appointment.healthInfo.allergy = healthInfo.allergy;
@@ -234,9 +291,20 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     const res = await viewPatientAppointment();
     const patientAppointments = res.data.map((item) => {
       const date = new Date(item.timeslot.date);
+      const caseDescNull: CaseDesc = {
+        symptoms: '',
+        diagnoses: '',
+        prescription: '',
+      };
+      console.log(item);
+      const caseDesc = item.caseDescription ? JSON.parse(item.caseDescription) as CaseDesc : caseDescNull;
       const appointment: MyPatientAppointment = {
         key: String(item.appointmentId),
-        caseDescription: item.caseDescription,
+        caseDescription: {
+          symptoms: caseDesc.symptoms,
+          diagnoses: caseDesc.diagnoses,
+          prescription: caseDesc.prescription,
+        },
         id: item.appointmentId,
         hospital: item.hospital.hospitalName,
         department: item.department.departmentName,
@@ -263,42 +331,46 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     });
   }
 
-//   async fetchSelectedPatientAppointments() {
-//     const { selectedPatient } = this.state;
-//     const res = await viewPatientAppointment({
-//       patientEmail: selectedPatient.email,
-//     });
-//     const selectedPatientAppointments = res.data.map((item, index) => {
-//       const date = new Date(item.timeslot.date);
-//       const appointment: SelectedPatientAppointment = {
-//         key: '',
-//         id: 0,
-//         department: '',
-//         date: '',
-//         caseDescription: {
-//           symptoms: '',
-//           diagnoses: '',
-//           prescription: '',
-//         },
-//       };
-//       appointment.date = `${(date.getMonth() + 1)}-${date.getDate()}`;
-//       appointment.id = item.appointmentId;
-//       appointment.department = item.department.departmentName;
-//       appointment.caseDescription = item.caseDescription;
-//       appointment.key = String(index);
-//       return appointment;
-//     });
-//     this.setState({
-//       selectedPatientAppointments,
-//     });
-//   }
+  async fetchSelectedPatientAppointments(selectedEmail: string) {
+    const res = await viewPatientAppointmentDoctor({
+      patientEmail: selectedEmail,
+    });
+    const usableData = res.data.filter((item) => {
+      const date = new Date(item.timeslot.date);
+      return isFutureDay(date) === false;
+    });
+    const selectedPatientAppointments = usableData.map((item, index) => {
+      const date = new Date(item.timeslot.date);
+      const caseDesc = JSON.parse(item.caseDescription) as CaseDesc;
+      const appointment: MyPatientAppointment = {
+        key: String(index),
+        id: item.appointmentId,
+        department: item.department.departmentName,
+        date: `${(date.getMonth() + 1)}-${date.getDate()}`,
+        caseDescription: {
+          symptoms: caseDesc.symptoms,
+          diagnoses: caseDesc.diagnoses,
+          prescription: caseDesc.prescription,
+        },
+        hospital: item.hospital.hospitalName,
+        doctor: '',
+        timeSlotId: 0,
+        startTime: '',
+        isIncoming: isFutureDay(date),
+      };
+      return appointment;
+    });
+    this.setState({
+      selectedPatientAppointments,
+    });
+  }
 
   @autobind
   handleSelectPatient(d: MyDoctorAppointment) {
     this.setState({
       selectedPatient: d,
     });
-    //this.fetchSelectedPatientAppointments();
+    this.fetchSelectedPatientAppointments(d.email);
   }
 
   @autobind
@@ -355,21 +427,21 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
   }
 
   @autobind
-  handleSymptomsChange(e: React.ChangeEvent<HTMLInputElement>) {
+  handleSymptomsChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     this.setState({
       symptoms: e.target.value,
     });
   }
 
   @autobind
-  handleDiagnosesChange(e: React.ChangeEvent<HTMLInputElement>) {
+  handleDiagnosesChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     this.setState({
       diagnoses: e.target.value,
     });
   }
 
   @autobind
-  handlePrescriptionChange(e: React.ChangeEvent<HTMLInputElement>) {
+  handlePrescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     this.setState({
       prescription: e.target.value,
     });
@@ -381,7 +453,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
       selectedPatientCase, symptoms, diagnoses, prescription,
     } = this.state;
     const description = { symptoms, diagnoses, prescription };
-
+    console.log(description);
     await addPatientCaseReport({
       appointmentId: selectedPatientCase.id,
       caseDescription: description,
@@ -402,18 +474,18 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     return (
       <div className={cx('appointment')}>
         <div className={cx('appointment__buttonContainer')}>
-          <Button type="secondary" onClick={this.handleClearPatientCase}>Back</Button>
-          <Button type="secondary" onClick={this.handleCompleteCaseReport}>Complete</Button>
+          <Button type="secondary" className={cx('appointment__button')} onClick={this.handleClearPatientCase}>Back</Button>
+          <Button type="primary" className={cx('appointment__button')} onClick={this.handleCompleteCaseReport}>Complete</Button>
         </div>
-        <div className={cx('appointment__name')}>{`New Case Report for ${selectedPatientCase.name}.`}</div>
-        <div className={cx('appointment__largerContainer')}>
+        <div className={cx('appointment__name')}>{`New Case Report for ${selectedPatientCase.name}`}</div>
+        <div className={cx('appointment__largeContainer')}>
           <div className={cx('appointment__container')}>
             <div className={cx('appointment__indicator')}>APPOINTMENT ID</div>
             <div className={cx('appointment__normal')}>{selectedPatientCase.id}</div>
           </div>
           <div className={cx('appointment__container')}>
             <div className={cx('appointment__indicator')}>DEPARTMENT</div>
-            <div className={cx('appointment__normal')}>{userStore!.departmentName}</div>
+            <div className={cx('appointment__normal')}>{userStore.departmentName}</div>
           </div>
           <div className={cx('appointment__container')}>
             <div className={cx('appointment__indicator')}>DATE</div>
@@ -422,24 +494,18 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
         </div>
         <div className={cx('appointment__indicator')}>CASE DESCRIPTION</div>
         <div className={cx('appointment__indicator')}>SYMPTOMS</div>
-        <Input
-          key="date"
+        <textarea
           className={cx('appointment__input')}
-          label="DATE(YYYY-MM-DD)"
           onChange={this.handleSymptomsChange}
         />
         <div className={cx('appointment__indicator')}>DIAGNOSES</div>
-        <Input
-          key="date"
+        <textarea
           className={cx('appointment__input')}
-          label="DATE(YYYY-MM-DD)"
           onChange={this.handleDiagnosesChange}
         />
         <div className={cx('appointment__indicator')}>PRESCRIPTION</div>
-        <Input
-          key="date"
+        <textarea
           className={cx('appointment__input')}
-          label="DATE(YYYY-MM-DD)"
           onChange={this.handlePrescriptionChange}
         />
       </div>
@@ -447,7 +513,8 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
   }
 
   renderPatient() {
-    const { selectedPatient } = this.state;
+    const { selectedPatient, selectedPatientAppointments } = this.state;
+    const table = <Table className={cx('appointment__table')} columns={this.selectedPatientColumns} dataSource={selectedPatientAppointments} /> 
     return (
       <div className={cx('appointment')}>
         <div className={cx('appointment__buttonContainer')}>
@@ -465,18 +532,30 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
         <div className={cx('appointment__indicator')}>MEDICAL HISTORY</div>
         <div className={cx('appointment__content')}>{selectedPatient.healthInfo.medicalHistory}</div>
         <div className={cx('appointment__indicator')}>MEDICAL RECORDS</div>
+        {table}
       </div>
     );
   }
 
   renderAppointment() {
-    const { patientAppointments, doctorAppointments } = this.state;
+    const { patientAppointments, doctorAppointments, message } = this.state;
+    const reminder = message;
     const { userStore } = this.props;
     const isPatient = userStore!.role === 'PATIENT';
+    const today = new Date();
+    let greeting;
+    if (today.getHours() < 12) {
+      greeting = 'Good morning';
+    } else if (today.getHours() < 18) {
+      greeting = 'Good afternoon';
+    } else {
+      greeting = 'Good evening';
+    }
     const table = isPatient ? <Table className={cx('appointment__table')} columns={this.patientColumns} dataSource={patientAppointments} /> : <Table className={cx('appointment__table')} columns={this.DoctorColumns} dataSource={doctorAppointments} />;
     return (
       <div className={cx('appointment')}>
-        <div className={cx('appointment__title')}>{`Good morning ${userStore.firstName}.`}</div>
+        { isPatient && reminder.length > 0 && <div className = {cx('appointment__reminder')}>{reminder}</div> }
+        <div className={cx('appointment__title')}>{`${greeting} ${userStore.firstName}.`}</div>
         <div className={cx('appointment__desc')}>
           <span className={cx('appointment__indicator')}>INCOMING APPOINTMENTS</span>
         </div>

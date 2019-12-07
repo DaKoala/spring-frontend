@@ -1,6 +1,7 @@
 export type Role = 'PATIENT' | 'DOCTOR' | 'STAFF' | 'HOSPITAL';
 
 export type HealthInformation = Record<'allergy' | 'disease' | 'medicalHistory', string>;
+export type CaseDesc = Record<'symptoms' | 'diagnoses' | 'prescription', string>;
 
 interface AppointmentTimeSlot {
   date: string;
@@ -30,14 +31,14 @@ export interface DoctorAppointment{
     lastName: string;
     gender: string;
     healthInformation: string;
-    email: string;
+    patientEmail: string;
   };
   timeslot: AppointmentTimeSlot;
 }
 
 export interface PatientAppointment{
   appointmentId: number;
-  caseDescription: Record<string, string>;
+  caseDescription: string;
   department: {
     departmentName: string;
   };

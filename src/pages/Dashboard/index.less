@@ -5,7 +5,7 @@
   min-width: 760px;
   width: 100%;
   height: 100%;
-  padding: 50px 123px 0 50px;
+  padding: 50px 50px 0 50px;
 }
 .appointment__title {
   font-size: 24px;
@@ -28,6 +28,7 @@
   font-size: 14px;
   font-weight: bold;
   color: @text-black;
+  margin-bottom: 10px;
 }
 .appointment__table{
   margin-top: 35px;
@@ -52,19 +53,47 @@
   text-decoration: underline;
   font-style: italic;
 }
+.appointment__button{
+    margin-left: 20px;
+}
 .appointment__largeContainer{
     display: flex;
     flex-direction: row;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 .appointment__container{
-    margin-right: 20px;
+    margin-right: 35px;
+    margin-bottom: 10px;
     display: flex;
     flex-direction: column;
 }
 .appointment__input{
+    width: 100%;
     margin: 20px 0;
     height: 100px;
+    outline: none;
+    border: none;
     background-color: @bk-white;
-    padding: 10px 20px;
+    border-radius: 5px;
+    padding: 20px;
     color: @text-grey;
+    font-family: 'Lato';
+    font-size: 16px;
+    color: @text-grey;
+}
+.appointment__reminder{
+    margin: 10px;
+    border: solid 1px #b4f0cd;
+    background-color: #ebfdf3;
+    padding: 10px;
+    width: 100%;
+}
+.appointment__oneDescription{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+.appointment__prompt{
+    width: 160px;
 }

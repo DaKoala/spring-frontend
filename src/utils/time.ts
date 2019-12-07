@@ -41,8 +41,8 @@ export function isFutureDay(date: Date): boolean {
   if (month > currMonth) {
     return true;
   }
-  const day = date.getDay();
-  const currDay = now.getDay();
+  const day = date.getDate();
+  const currDay = now.getDate();
   if (day > currDay) {
     return true;
   }

@@ -15,3 +15,5 @@ export * from './apis/view-doctor-appointment';
 export * from './apis/view-patient-appointment';
 export * from './apis/add-patient-case-report';
 export * from './apis/cancel-appointment-by-patient';
+export * from './apis/view-patient-appointment-doctor';
+export * from './apis/view-patient-daily-analysis';
