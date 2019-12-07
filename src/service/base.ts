@@ -1,7 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosPromise } from 'axios';
 import { getToken } from './cookie';
+import toast from '@/utils/toast';
 
-export const BASE_URL = 'https://39026895.ngrok.io';
+export const BASE_URL = 'https://0356395a.ngrok.io';
 
 function transformData(data?: Record<string, any>) {
   if (!data) {
@@ -60,17 +61,29 @@ async function handleError<T>(axiosPromise: AxiosPromise): Promise<BaseResponse<
   try {
     response = await axiosPromise;
   } catch (e) {
-    alert(e.message);
+    toast({
+      type: 'alert',
+      title: 'Error',
+      content: e.message,
+    });
     throw e;
   }
   if (response.status !== 200) {
     const errorMsg = `${response.statusText}\nError code: ${response.status}`;
-    alert(errorMsg);
+    toast({
+      type: 'alert',
+      title: 'Error',
+      content: errorMsg,
+    });
     throw new Error(errorMsg);
   }
   const resData = response.data;
   if (!resData.success || resData.code !== 200) {
-    alert(resData.message);
+    toast({
+      type: 'alert',
+      title: 'Error',
+      content: resData.message,
+    });
     throw new Error(resData.message);
   }
   if (typeof resData.data === 'string') {

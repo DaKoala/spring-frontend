@@ -22,6 +22,7 @@ import {
 import appendKey from '@/utils/appendKey';
 import formatDate, { addMinute } from '@/utils/time';
 import RouterStore from '@/stores/router';
+import toast from '@/utils/toast';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -201,7 +202,11 @@ export default class MakeAppointment extends Component<MakeAppointmentProps, Mak
       timeSlotId: timeSlot.timeSlotId,
       doctorEmail: selectedDoctor.doctorEmail,
     });
-    alert(`You successfully made an appointment with doctor ${selectedDoctor.firstName}`);
+    toast({
+      type: 'alert',
+      title: 'Success',
+      content: `You successfully made an appointment with doctor ${selectedDoctor.firstName}`,
+    });
     const { routerStore } = this.props;
     routerStore.replace('/user');
   }

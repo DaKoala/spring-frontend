@@ -21,6 +21,7 @@ import Button from '@/components/Button';
 import Input from '@/components/Input';
 import PatientRecord from '@/biz-components/PatientRecord';
 import { isFutureDay } from '@/utils/time';
+import toast from '@/utils/toast';
 
 const cx = classNames.bind(styles);
 
@@ -316,14 +317,17 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
 
   @autobind
   async handleCancelAppointment(appointment: MyPatientAppointment) {
-    const confirmed = window.confirm('Are you sure to cancel the appointment?');
-    if (confirmed) {
-      await cancelAppointmentByPatient({
-        timeSlotId: appointment.timeSlotId,
-        appointmentId: appointment.id,
-      });
-      await this.fetchPatientAppointment();
-    }
+    toast({
+      type: 'confirm',
+      content: 'Are you sure to cancel the appointment?',
+      onClickConfirm: async () => {
+        await cancelAppointmentByPatient({
+          timeSlotId: appointment.timeSlotId,
+          appointmentId: appointment.id,
+        });
+        await this.fetchPatientAppointment();
+      },
+    });
   }
 
   @autobind
