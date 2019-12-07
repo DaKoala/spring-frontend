@@ -12,5 +12,6 @@ export async function viewDoctorTimeslot(data: ViewDoctorTimeSlotRequest) {
     url: '/timeslot/view',
     data,
   });
+  res.data = res.data.filter((timeSlot) => timeSlot.date > Date.now());
   return res;
 }

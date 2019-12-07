@@ -296,7 +296,6 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
         diagnoses: '',
         prescription: '',
       };
-      console.log(item);
       const caseDesc = item.caseDescription ? JSON.parse(item.caseDescription) as CaseDesc : caseDescNull;
       const appointment: MyPatientAppointment = {
         key: String(item.appointmentId),
@@ -453,7 +452,6 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
       selectedPatientCase, symptoms, diagnoses, prescription,
     } = this.state;
     const description = { symptoms, diagnoses, prescription };
-    console.log(description);
     await addPatientCaseReport({
       appointmentId: selectedPatientCase.id,
       caseDescription: description,
@@ -514,7 +512,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
 
   renderPatient() {
     const { selectedPatient, selectedPatientAppointments } = this.state;
-    const table = <Table className={cx('appointment__table')} columns={this.selectedPatientColumns} dataSource={selectedPatientAppointments} /> 
+    const table = <Table className={cx('appointment__table')} columns={this.selectedPatientColumns} dataSource={selectedPatientAppointments} />
     return (
       <div className={cx('appointment')}>
         <div className={cx('appointment__buttonContainer')}>
