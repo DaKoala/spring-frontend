@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common');
 
-module.exports = merge(common, {
+module.exports = merge(common('development'), {
   mode: 'development',
   optimization: {
     minimize: false,

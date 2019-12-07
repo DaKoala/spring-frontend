@@ -4,8 +4,8 @@
   "description": "Front-end of spring app",
   "main": "src/index.tsx",
   "scripts": {
-    "build": "rm -rf ./dist && webpack --config webpack.prod.js",
-    "dev": "webpack-dev-server --config webpack.dev.js --open",
+    "build": "cross-env rm -rf ./dist && webpack --config webpack.prod.js",
+    "dev": "cross-env webpack-dev-server --config webpack.dev.js --open",
     "lint": "eslint --ext .ts,.tsx src/ --fix",
     "test": "jest",
     "clean": "rm -rf ./node_modules"
@@ -27,6 +27,7 @@
     "@typescript-eslint/eslint-plugin": "^2.3.0",
     "@typescript-eslint/parser": "^2.3.0",
     "copy-webpack-plugin": "^5.0.4",
+    "cross-env": "^6.0.3",
     "css-loader": "^3.2.0",
     "eslint": "^6.4.0",
     "eslint-config-airbnb": "^18.0.1",
