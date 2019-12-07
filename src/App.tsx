@@ -11,8 +11,15 @@ import Home from '@/pages/Home';
 import Register from '@/pages/Register';
 import User from '@/pages/User';
 
+const whiteListPaths = [
+  '/',
+];
+
 export default class App extends React.PureComponent {
   async componentDidMount() {
+    if (!whiteListPaths.includes(routerStoreInstance.location.pathname)) {
+      routerStoreInstance.replace('/');
+    }
     const token = getToken();
     if (token) {
       await viewPersonalInfo();
