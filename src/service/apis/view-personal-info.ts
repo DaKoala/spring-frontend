@@ -20,7 +20,10 @@ interface DoctorInfo {
   firstName: string;
   lastName: string;
   gender: string;
-  hospitalId: string;
+  hospital: {
+    hospitalId: string;
+    hospitalName: string;
+  };
   title: string;
 }
 
@@ -62,7 +65,8 @@ export async function viewPersonalInfo() {
     userStoreInstance.setFirstName(data.firstName);
     userStoreInstance.setLastName(data.lastName);
     userStoreInstance.setGender(data.gender);
-    userStoreInstance.setHospitalId(data.hospitalId);
+    userStoreInstance.setHospitalId(data.hospital.hospitalId);
+    userStoreInstance.setHospitalName(data.hospital.hospitalName);
     userStoreInstance.setTitle(data.title);
   } else {
     userStoreInstance.setRole('HOSPITAL');
