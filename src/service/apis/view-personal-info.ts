@@ -1,5 +1,4 @@
 import ajax from '../base';
-import { HealthInformation } from '@/constants';
 import { userStoreInstance } from '@/stores/user';
 
 interface PatientInfo {

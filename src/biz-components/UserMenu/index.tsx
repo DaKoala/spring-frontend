@@ -8,6 +8,7 @@ import Icon, { IconName } from '@/components/Icon';
 import UserStore from '@/stores/user';
 import RouterStore from '@/stores/router';
 import { deleteToken } from '@/service/cookie';
+import toast from '@/utils/toast';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -102,13 +103,15 @@ export default class UserMenu extends PureComponent<UserMenuProps> {
 
   @autobind
   handleLogOut() {
-    const isSure = window.confirm('Are you sure to log out?');
-    if (!isSure) {
-      return;
-    }
-    deleteToken();
-    const { routerStore } = this.props;
-    routerStore!.push('/');
+    toast({
+      type: 'confirm',
+      content: 'Are you sure to log out?',
+      onClickConfirm: () => {
+        deleteToken();
+        const { routerStore } = this.props;
+        routerStore!.push('/');
+      },
+    });
   }
 
   renderStatus() {
