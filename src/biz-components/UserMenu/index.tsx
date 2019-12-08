@@ -66,11 +66,6 @@ export default class UserMenu extends PureComponent<UserMenuProps> {
   private patientConfig: MenuItemConfig[] = [
     this.dashboardConfig,
     {
-      to: '/user/records',
-      iconName: 'records',
-      text: 'Medical records',
-    },
-    {
       to: '/user/appointment',
       iconName: 'appointment',
       text: 'Make appointment',

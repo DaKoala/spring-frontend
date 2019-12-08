@@ -235,6 +235,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
     const isPatient = userStore!.role === 'PATIENT';
     if (isPatient) {
       this.fetchPatientAppointment();
+      this.fetchMessage();
     } else {
       this.fetchDoctorAppointment();
     }
