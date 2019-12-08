@@ -94,7 +94,7 @@ export default class UserMenu extends PureComponent<UserMenuProps> {
       text: 'Time Slots',
     },
     {
-      to: '/user/profileDoc',
+      to: '/user/profile',
       iconName: 'profile',
       text: 'My profile',
     },

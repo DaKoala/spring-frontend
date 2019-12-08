@@ -13,8 +13,10 @@ interface PatientInfo {
 
 interface DoctorInfo {
   birthday: number;
-  departmentId: number;
-  departmentName: string;
+  department: {
+    departmentId: number;
+    departmentName: string;
+  };
   doctorEmail: string;
   firstName: string;
   lastName: string;
@@ -55,8 +57,8 @@ export async function viewPersonalInfo() {
   } else if (isDoctor(data)) {
     userStoreInstance.setRole('DOCTOR');
     userStoreInstance.setBirthday(data.birthday);
-    userStoreInstance.setDepartmentId(data.departmentId);
-    userStoreInstance.setDepartmentName(data.departmentName);
+    userStoreInstance.setDepartmentId(data.department.departmentId);
+    userStoreInstance.setDepartmentName(data.department.departmentName);
     userStoreInstance.setEmail(data.doctorEmail);
     userStoreInstance.setFirstName(data.firstName);
     userStoreInstance.setLastName(data.lastName);
