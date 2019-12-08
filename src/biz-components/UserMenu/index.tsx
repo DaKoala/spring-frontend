@@ -96,6 +96,15 @@ export default class UserMenu extends PureComponent<UserMenuProps> {
     },
   ];
 
+  private hospitalConfig: MenuItemConfig[] = [
+    this.dashboardConfig,
+    {
+      to: '/user/profile',
+      iconName: 'profile',
+      text: 'My profile',
+    },
+  ];
+
   @autobind
   handleLogOut() {
     toast({
@@ -125,6 +134,8 @@ export default class UserMenu extends PureComponent<UserMenuProps> {
     let config: MenuItemConfig[];
     if (userStore.role === 'PATIENT') {
       config = this.patientConfig;
+    } else if (userStore.role === 'HOSPITAL') {
+      config = this.hospitalConfig;
     } else {
       config = this.doctorConfig;
     }
