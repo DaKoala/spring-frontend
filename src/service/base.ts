@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosPromise } from 'axios';
 import { getToken } from './cookie';
 import toast from '@/utils/toast';
 
-export const BASE_URL = 'https://0356395a.ngrok.io';
+export const BASE_URL = 'https://ccb2f39b.ngrok.io';
 
 function transformData(data?: Record<string, any>) {
   if (!data) {

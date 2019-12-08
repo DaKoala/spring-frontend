@@ -22,7 +22,7 @@ import {
 import UserStore from '@/stores/user';
 import Button from '@/components/Button';
 import PatientRecord from '@/biz-components/PatientRecord';
-import { isFutureDay } from '@/utils/time';
+import { isFutureDay, isToday } from '@/utils/time';
 import toast from '@/utils/toast';
 
 const cx = classNames.bind(styles);
@@ -250,6 +250,7 @@ export default class Dashboard extends PureComponent<DoctorProps, DashboardState
 
   async fetchDoctorAppointment() {
     const res = await viewDoctorAppointment();
+    res.data = res.data.filter((item) => isToday(new Date(item.timeslot.date)));
     const doctorAppointments = res.data.map((item, index) => {
       const date = new Date(item.timeslot.date);
       const birthday = new Date(item.patient.birthday);
