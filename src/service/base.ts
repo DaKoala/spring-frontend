@@ -87,7 +87,10 @@ async function handleError<T>(axiosPromise: AxiosPromise): Promise<BaseResponse<
     throw new Error(resData.message);
   }
   if (typeof resData.data === 'string') {
-    resData.data = JSON.parse(resData.data);
+    try {
+      const parsedData = JSON.parse(resData.data);
+      resData.data = parsedData;
+    } catch (e) {}
   }
   return resData;
 }
