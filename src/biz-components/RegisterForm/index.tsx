@@ -9,6 +9,7 @@ import Button from '@/components/Button';
 import Select, { Option } from '@/components/Select';
 import { EMAIL_REGEX, DATE_REGEX } from '@/constants';
 import { register, postPatientInfo } from '@/service';
+import toast from '@/utils/toast';
 import styles from './index.less';
 
 const cx = classNames.bind(styles);
@@ -174,7 +175,10 @@ export default class RegisterForm extends PureComponent<RegisterFormProps, Regis
       birthday,
       healthInformation: healthInfo,
     });
-    alert('A confirmation message has been sent to you email address. Please confirm to activate your account.');
+    toast({
+      type: 'alert',
+      content: 'A confirmation message has been sent to you email address. Please confirm to activate your account.',
+    });
     const { routerStore } = this.props;
     routerStore.replace('/');
   }
