@@ -1,56 +1,72 @@
 # Spring
-Spring应用的前端项目，本项目为上海纽约大学2019秋季学期 *Software Engineering* 课程小组项目。
+This is the front-end part of the Spring project. This project is a course project of the course *Software Engineering* offered in 2019 Fall Semester in NYU Shanghai.
 
-## 技术栈
+## Tech Stack
 
-基本框架：TypeScript + React
+Framework：TypeScript + React
 
-样式表：Less
+Stylesheet：Less
 
-状态管理：Mobx
+State management：Mobx
 
-打包：Webpack
+Bundler：Webpack
 
-测试：Jest(unit test) + Puppeteer(e2e test)
+Test：Jest(unit test) + Puppeteer(e2e test)
 
-## 安装
+Package manager: yarn
 
-推荐使用 `yarn` 作为包管理工具，[下载地址](https://yarnpkg.com/en/docs/install)
+## Installation
+
+Before start, some packages are required to be installed globally:
+
+* [Node.js](https://nodejs.org/en/) (LTS version)
+* [yarn](https://yarnpkg.com/en/docs/install)
+
+### Download
 
 ```bash
-yarn # 安装依赖
+git clone https://github.com/DaKoala/spring-frontend.git
+cd spring-frontend
+yarn # Install dependencies
 ```
 
-### 开发环境下使用，启动热模块重载(HMR)功能
+### Compiles and hot-reloads for development
 
 ```bash
 yarn dev
 ```
 
-### 生产环境下使用，打包出压缩后的文件
+### Compiles and minifies for production
 
 ```bash
 yarn build
 ```
 
-### 删除依赖
+### Lint and auto fix TypeScript files
+
+```bash
+yarn lint
+```
+
+### Remove all dependencies
 
 ```bash
 yarn clean
 ```
 
-## 项目结构
+## File structure
 
-* `index.tsx` 项目的主入口
-* `App.tsx` 根组件
-* `assets` 存放静态文件（图片、音频、视频）等的文件夹
-* `biz-components` 业务组件，只有它可以用Store
-* `components` 与业务无关的通用组件
-* `constants` 常量，可以存放一些 `type` , `enum` , `interface` 之类的东西
-* `pages` 页面组件，一个页面组件对应一个路由
-* `service` 定义与后端交互的REST接口
-* `stores` 状态管理，用来存储数据，由Mobx实现
-* `styles` 通用的、可复用的样式文件
-* `test` 测试脚本
-* `types` 全局TypeScript声明
-* `utils` 工具函数
+* `index.tsx` Main entrance of the project
+* `App.tsx` The root component
+* `assets` Static files (images, audio files, video files)
+* `biz-components` Business components (These components have the business logic integrated and can use the global store)
+* `components` General components (These components do not require specific context and cannot use the global store)
+* `pages` Page components (These components each corresponds to a route)
+* `constants` Global constants such as `type` , `enum` , `interface` and other constant variables
+* `service` Functions sending requests and parsing responses
+* `stores` Global store to manage state, powered by [Mobx](https://mobx.js.org/)
+* `styles` Reusable stylesheets
+* `test` Test scripts
+* `types` Global TypeScript type declaration
+* `utils` Utility functions
+* `email` Email template HTML file
