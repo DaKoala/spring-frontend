@@ -3,15 +3,15 @@ This is the front-end part of the Spring project. This project is a course proje
 
 ## Tech Stack
 
-Framework：TypeScript + React
+Framework: TypeScript + React
 
-Stylesheet：Less
+Stylesheet: Less
 
-State management：Mobx
+State management: Mobx
 
-Bundler：Webpack
+Bundler: Webpack
 
-Test：Jest(unit test) + Puppeteer(e2e test)
+Test: Jest(unit test) + Puppeteer(e2e test)
 
 Package manager: yarn
 
