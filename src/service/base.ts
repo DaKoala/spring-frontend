@@ -2,8 +2,14 @@ import axios, { AxiosRequestConfig, AxiosPromise } from 'axios';
 import { getToken } from './cookie';
 import toast from '@/utils/toast';
 
+/**
+ * Base URL of the back-end
+ */
 export const BASE_URL = 'https://ccb2f39b.ngrok.io';
 
+/**
+ * Transform JSON data to form data
+ */
 function transformData(data?: Record<string, any>) {
   if (!data) {
     return undefined;
@@ -26,6 +32,10 @@ interface RequestOptions {
   method?: 'GET' | 'POST';
 }
 
+/**
+ * Generate config for axios
+ * @param options Config of the request
+ */
 function generateAxiosConfig(options: RequestOptions): AxiosRequestConfig {
   const {
     url,
@@ -56,6 +66,10 @@ function generateAxiosConfig(options: RequestOptions): AxiosRequestConfig {
   };
 }
 
+/**
+ * General error handling for request
+ * @param axiosPromise Promise object of the request
+ */
 async function handleError<T>(axiosPromise: AxiosPromise): Promise<BaseResponse<T>> {
   let response;
   try {
@@ -102,6 +116,10 @@ interface BaseResponse<T = unknown> {
   data: T;
 }
 
+/**
+ * General function to send requests
+ * @param options Config of the request
+ */
 export default async function ajax<T = null>(options: RequestOptions): Promise<BaseResponse<T>> {
   const axiosConfig = generateAxiosConfig(options);
   const axiosPromise = axios(axiosConfig);

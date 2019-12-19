@@ -2,6 +2,11 @@ beforeAll(async () => {
   await page.goto('http://localhost:3000');
 });
 
+/**
+ * Currently we only have test cases for landing page and home page
+ * to test basic functionality of the application.
+ * We manually test other pages.
+ */
 describe('Home page', () => {
   it('page should be titled spring', async () => {
     const title = await page.title();

@@ -10,6 +10,9 @@ export interface ToastConfig {
 
 const body = document.querySelector('body');
 
+/**
+ * Generate a toast in the top of the screen to replace built-in alert
+ */
 export default function toast({
   type,
   content,

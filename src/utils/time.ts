@@ -1,3 +1,8 @@
+/**
+ * Convert a timestamp into a time string
+ * @param timestamp Timestamp
+ * @param format The template string. YYYY, MM and DD will be replaced by time value
+ */
 export default function formatDate(timestamp: number, format: string): string {
   const date = new Date(timestamp);
   const day = date.getDate();
@@ -10,6 +15,11 @@ export default function formatDate(timestamp: number, format: string): string {
     .replace('DD', fDay);
 }
 
+/**
+ * Add minute to a time string
+ * @param time Time string
+ * @param addedMinute Number of minute to be added to the time
+ */
 export function addMinute(time: string, addedMinute: number): string {
   let [hour, minute] = time.split(':').map((value) => parseInt(value, 10));
   minute += addedMinute;
@@ -23,6 +33,10 @@ export function addMinute(time: string, addedMinute: number): string {
   return `${hourStr}:${minuteStr}`;
 }
 
+/**
+ * Determine whether a date is a day in the future
+ * @param date The date to be examined
+ */
 export function isFutureDay(date: Date): boolean {
   const now = new Date();
   const year = date.getFullYear();
@@ -49,6 +63,10 @@ export function isFutureDay(date: Date): boolean {
   return false;
 }
 
+/**
+ * Determine whether a date is today
+ * @param date The date to be examined
+ */
 export function isToday(date: Date) {
   const now = new Date();
   return date.getFullYear() === now.getFullYear()

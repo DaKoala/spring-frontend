@@ -1,6 +1,9 @@
 import { observable, action, computed } from 'mobx';
 import { Role, HealthInformation } from '@/constants';
 
+/**
+ * Global user store to store user information
+ */
 export default class UserStore {
   @observable email = '';
 

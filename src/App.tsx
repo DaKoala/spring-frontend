@@ -11,12 +11,21 @@ import Home from '@/pages/Home';
 import Register from '@/pages/Register';
 import User from '@/pages/User';
 
+/**
+ * Paths in this list can be accessed without authorization
+ */
 const whiteListPaths = [
   '/',
 ];
 
+/**
+ * The root component, which is the parent of all components
+ */
 export default class App extends React.PureComponent {
   async componentDidMount() {
+    /**
+     * If not authorized, redirect to the home page
+     */
     if (!whiteListPaths.includes(routerStoreInstance.location.pathname)) {
       routerStoreInstance.replace('/');
     }
@@ -27,6 +36,10 @@ export default class App extends React.PureComponent {
     }
   }
 
+  /**
+   * The provider inject the store as props of its all children
+   * The router render components dynamically
+   */
   render() {
     return (
       <Provider
