@@ -5,7 +5,7 @@ import toast from '@/utils/toast';
 /**
  * Base URL of the back-end
  */
-export const BASE_URL = 'https://ccb2f39b.ngrok.io';
+export const BASE_URL = 'http://111.229.110.117:8080';
 
 /**
  * Transform JSON data to form data
