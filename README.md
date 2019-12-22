@@ -70,3 +70,6 @@ yarn clean
 * `types` Global TypeScript type declaration
 * `utils` Utility functions
 * `email` Email template HTML file
+
+## License
+[GPL-3.0](./LICENSE)
